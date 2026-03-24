@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Hero from "@/components/Hero";
 import ProjectsShowcase from "@/components/ProjectsShowcase";
 import BlogShowcase from "@/components/BlogShowcase";
@@ -6,11 +6,12 @@ import { getAllServices, getAllRealisations, getAllPosts } from "@/lib/api";
 import Link from "next/link";
 import {
   Code2,
-  ShoppingCart,
   Search,
-  Globe,
-  Palette,
-  Zap,
+  LifeBuoy,
+  PenTool,
+  MonitorPlay,
+  Video,
+  Share2,
   ArrowUpRight,
   CheckCircle2,
   XCircle,
@@ -18,44 +19,50 @@ import {
 
 export const revalidate = 60;
 
-const iconMap = [Code2, ShoppingCart, Search, Globe, Palette, Zap];
+const iconMap = [Code2, Search, LifeBuoy, PenTool, MonitorPlay, Video, Share2];
 
 const fallbackServices = [
   {
-    slug: "DeveloppementWeb",
+    slug: "developpement-web",
     title: "Développement Web",
     excerpt:
-      "WordPress sur mesure, React JS et Next.js. Sites rapides, responsives et optimisés. Déploiement clé en main avec hébergement sécurisé inclus.",
-  },
-  {
-    slug: "ecommerce",
-    title: "E-commerce sur mesure",
-    excerpt:
-      "WooCommerce optimisé pour le marché africain. Paiement mobile money, stocks en temps réel. Taux de conversion boosté dès le lancement.",
+      "Création d'applications web performantes, interfaces Headless et sites vitrines sur-mesure. Architecture robuste et évolutive pour un résultat haut de gamme.",
   },
   {
     slug: "seo",
     title: "SEO & Visibilité",
     excerpt:
-      "Audit technique, optimisation Core Web Vitals, référencement local Bénin/Afrique de l'Ouest. Rapport mensuel des positions inclus.",
-  },
-  {
-    slug: "it-managed",
-    title: "IT Managé & Cloud",
-    excerpt:
-      "Gestion complète de votre infrastructure IT, cloud sécurisé, sauvegardes automatisées et support 24/7. Optimisation des coûts et performance garantie.",
-  },
-  {
-    slug: "cybersecurity-audit",
-    title: "Cybersécurité & Audit IT",
-    excerpt:
-      "Audit complet de votre infrastructure IT, tests de pénétration, conformité aux normes de sécurité. Protection proactive contre les menaces et vulnérabilités.",
+      "Audit technique, optimisation Core Web Vitals et stratégie de contenu avancée. Boostez votre trafic organique et dominez les résultats de recherche.",
   },
   {
     slug: "maintenance-support",
     title: "Maintenance & Support",
     excerpt:
-      "Maintenance corrective et évolutive, mises à jour, sauvegardes automatiques. Support réactif sous 24h.",
+      "Suivi informatique proactif, mises à jour de sécurité et monitoring continu. Un support réactif pour garantir la stabilité de votre activité de bout en bout.",
+  },
+  {
+    slug: "design-identite",
+    title: "Design & Identité Visuelle",
+    excerpt:
+      "Conception d'interfaces UI/UX premium, création de logos et chartes graphiques. Une identité forte pour marquer durablement vos utilisateurs.",
+  },
+  {
+    slug: "visuels-motion",
+    title: "Visuels & Motion Design",
+    excerpt:
+      "Création de visuels engageants et d'animations dynamiques (Motion). Donnez vie à votre marque avec des éléments visuels modernes et percutants.",
+  },
+  {
+    slug: "production-video",
+    title: "Production Vidéo",
+    excerpt:
+      "Réalisation, montage et habillage vidéo professionnels. Des contenus immersifs pour magnifier vos campagnes publicitaires et votre communication.",
+  },
+  {
+    slug: "gestion-reseaux-sociaux",
+    title: "Gestion de Réseau Social",
+    excerpt:
+      "Stratégie de communication, création de contenu régulier et animation de communauté. Engagez votre audience et développez un lien unique.",
   },
 ];
 
@@ -84,7 +91,7 @@ export default async function Home() {
   const realisations = (realisationsRaw || []) as any[];
   const posts = (postsRaw || []) as any[];
   const serviceItems =
-    services.length > 0 ? services.slice(0, 6) : fallbackServices;
+    services.length > 0 ? services.slice(0, 8) : fallbackServices;
 
   return (
     <div className="bg-[#0b0b0b]">
@@ -139,10 +146,10 @@ export default async function Home() {
                       ...posStyle,
                       transform: `rotate(${rotate})`,
                     }}
-                    className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-sm font-medium max-w-[230px] backdrop-blur-sm ${
+                    className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-sm font-medium max-w-[230px] backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:z-10 group cursor-default ${
                       item.type === "good"
-                        ? "bg-amber-400/10 border-amber-400/25 text-white shadow-[0_4px_28px_rgba(251,191,36,0.13)]"
-                        : "bg-[#111]/80 border-[#272727] text-gray-600 line-through decoration-gray-700"
+                        ? "bg-amber-400/10 border-amber-400/25 text-white shadow-[0_4px_28px_rgba(251,191,36,0.13)] hover:border-amber-400/50 hover:shadow-[0_8px_32px_rgba(251,191,36,0.2)]"
+                        : "bg-[#111]/80 border-[#272727] text-gray-600 line-through decoration-gray-700 hover:bg-[#1a1a1a]"
                     }`}
                   >
                     {item.type === "good" ? (
@@ -215,10 +222,10 @@ export default async function Home() {
             {serviceItems.map((item: any, index: number) => {
               const Icon = iconMap[index % iconMap.length];
               return (
-                <div
-                  key={item.slug}
-                  className="group p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1"
-                >
+                  <div
+                    key={item.slug}
+                    className="group p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl hover:border-amber-400/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] cursor-pointer"
+                  >
                   <div className="w-10 h-10 mb-6 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
                     <Icon size={19} />
                   </div>

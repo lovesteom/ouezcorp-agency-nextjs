@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://your-wordpress-site.com;
     font-src 'self';
@@ -24,6 +24,39 @@ export function middleware(request: NextRequest) {
     // Replace newline characters and multiple spaces with a single space
     cspHeader.replace(/\s{2,}/g, " ").trim(),
   );
+
+  const url = request.nextUrl.clone();
+  const hostname = request.headers.get("host") || "";
+
+  // Rewrite admin subdomain
+  if (hostname.startsWith("admin.")) {
+    // Implement Basic Auth for Admin Subdomain
+    const basicAuth = request.headers.get('authorization');
+    if (!basicAuth) {
+      return new NextResponse('Authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Secure Admin Area"',
+        },
+      });
+    }
+
+    const authValue = basicAuth.split(' ')[1];
+    const [user, pwd] = Buffer.from(authValue, 'base64').toString().split(':');
+
+    // Default admin credentials (change in production!)
+    if (user !== 'admin' || pwd !== 'ouezcorp2026') {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    // If the path doesn't already start with /admin, add it
+    if (!url.pathname.startsWith("/admin")) {
+      url.pathname = `/admin${url.pathname === "/" ? "" : url.pathname}`;
+      return NextResponse.rewrite(url, {
+        headers: requestHeaders,
+      });
+    }
+  }
 
   return NextResponse.next({
     headers: requestHeaders,

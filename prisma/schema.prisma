@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  content        String?  @db.Text
+  images         String?  @db.Text // JSON string to store images URLs
+  links          String?  @db.Text // JSON string for links
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("TEXT") // "TEXT", "IMAGE", "RICH_TEXT"
+  group     String   @default("GLOBAL") // To structure it (ex: "Homepage", "Footer")
+  label     String   // Friendly name like "Hero Title"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

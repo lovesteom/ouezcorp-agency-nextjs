@@ -1,4 +1,4 @@
-﻿import { getAllServices } from "@/lib/api";
+import { getAllServices } from "@/lib/api";
 import Link from "next/link";
 import { Metadata } from "next";
 import {
@@ -187,7 +187,7 @@ export default async function ServicesPage() {
               return (
                 <div
                   key={service.slug}
-                  className="group p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  className="group p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl hover:border-amber-400/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] flex flex-col"
                 >
                   <div className="w-10 h-10 mb-6 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
                     <Icon size={19} />
@@ -288,24 +288,25 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA B2B Premium */}
       <section className="py-24 border-t border-[#222222]">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="p-12 bg-[#161616] border border-[#2a2a2a] rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <div className="group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-400/5 rounded-full blur-[100px] group-hover:bg-amber-400/10 transition-colors duration-500 pointer-events-none" />
+            <div className="relative z-10 max-w-xl">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors">
                 Vous avez un projet en tête ?
               </h2>
-              <p className="text-gray-300 text-sm max-w-md">
+              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
                 Premier échange gratuit — 30 min pour analyser votre situation
                 et vous proposer une approche concrète, sans engagement.
               </p>
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-full transition-all whitespace-nowrap shrink-0"
+              className="relative z-10 inline-flex items-center gap-2 px-8 py-4 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-full transition-all duration-300 whitespace-nowrap shrink-0 shadow-[0_4px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_8px_32px_rgba(251,191,36,0.5)] hover:-translate-y-1"
             >
-              Démarrer l&apos;échange <ArrowUpRight size={16} />
+              Démarrer l&apos;échange <ArrowUpRight size={18} />
             </Link>
           </div>
         </div>

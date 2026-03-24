@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google"; // Keeping Geist as it is already installed
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-geist-sans", // Keep variable name same as globals.css usage
   subsets: ["latin"],
 });
 
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0b0b0b] text-white min-h-screen flex flex-col`}
+        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-[#0b0b0b] text-white min-h-screen flex flex-col`}
       >
         <Header />
         <main className="grow">{children}</main>

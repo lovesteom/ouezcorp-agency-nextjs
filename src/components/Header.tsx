@@ -45,7 +45,7 @@ export default function Header() {
         {announcementItems.map((item, i) => (
           <span
             key={item}
-            className="flex items-center gap-2 text-[11px] text-gray-500 whitespace-nowrap"
+            className="flex items-center gap-2 text-[11px] text-white/60 whitespace-nowrap"
           >
             {i > 0 && <span className="w-1 h-1 rounded-full bg-[#333]" />}
             <span className="w-1 h-1 rounded-full bg-amber-400/60" />
@@ -62,11 +62,13 @@ export default function Header() {
             : "border-b border-[#1e1e1e]"
         }`}
         style={{
+          width: scrolled ? "calc(70% - 32px)" : "70%",
+          margin: "0 auto",
           backgroundColor: scrolled
-            ? "rgba(255,255,255,0.82)"
+            ? "rgb(255 255 255 / 19%)"
             : "rgba(11,11,11,0.97)",
-          backdropFilter: "blur(28px)",
-          WebkitBackdropFilter: "blur(28px)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
         }}
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
@@ -106,10 +108,10 @@ export default function Header() {
                     scrolled
                       ? isActive
                         ? "text-[#111]"
-                        : "text-gray-500 hover:text-[#111]"
+                        : "text-white hover:text-[#111]"
                       : isActive
                         ? "text-white"
-                        : "text-gray-400 hover:text-white"
+                        : "text-white/75 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -134,8 +136,8 @@ export default function Header() {
               href="/realisations"
               className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
                 scrolled
-                  ? "text-gray-600 hover:text-[#111]"
-                  : "text-gray-300 border border-[#2e2e2e] hover:border-white/30 hover:text-white"
+                  ? "text-white hover:text-[#111]"
+                  : "text-white border border-[#2e2e2e] hover:border-white/30 hover:text-white"
               }`}
             >
               Voir les projets
@@ -160,7 +162,7 @@ export default function Header() {
             className={`md:hidden transition-colors ${
               scrolled
                 ? "text-gray-600 hover:text-[#111]"
-                : "text-gray-300 hover:text-white"
+                : "text-white hover:text-white/80"
             }`}
             aria-label="Menu"
           >
@@ -191,7 +193,7 @@ export default function Header() {
                           : "text-gray-500 hover:text-[#111] hover:bg-black/4"
                         : isActive
                           ? "text-white bg-white/6"
-                          : "text-gray-400 hover:text-white hover:bg-white/4"
+                          : "text-white/75 hover:text-white hover:bg-white/4"
                     }`}
                     onClick={() => setIsOpen(false)}
                   >
@@ -209,7 +211,7 @@ export default function Header() {
                 className={`text-center py-3 text-sm font-medium rounded-full transition-all ${
                   scrolled
                     ? "text-gray-600 border border-[#d0d0d0] hover:border-[#999] hover:text-[#111]"
-                    : "text-gray-300 border border-[#2e2e2e] hover:border-white/30 hover:text-white"
+                    : "text-white border border-[#2e2e2e] hover:border-white/30"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
