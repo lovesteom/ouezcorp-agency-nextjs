@@ -118,15 +118,15 @@ export default async function ServicesPage() {
   const items = isFallback ? fallbackServices : services;
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-28">
+    <div className="bg-(--bg) min-h-screen pt-28">
       {/* Hero */}
-      <section className="py-32 border-b border-[#222222]">
+      <section className="py-32 border-b border-(--border)">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-6">
             Nos Expertises
           </p>
           <div className="grid md:grid-cols-2 gap-12 items-end mb-16">
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[0.92]">
+            <h1 className="text-5xl md:text-7xl font-bold text-(--fg) tracking-tight leading-[0.92]">
               Des solutions
               <br />
               web taillÃ©es
@@ -134,23 +134,23 @@ export default async function ServicesPage() {
               pour performer.
             </h1>
             <div>
-              <p className="text-gray-300 text-lg leading-relaxed max-w-md mb-10">
+              <p className="text-(--fg-2) text-lg leading-relaxed max-w-md mb-10">
                 Nous n&apos;essayons pas de tout faire. Nous excellons dans
                 l&apos;architecture Headless, l&apos;e-commerce haute
-                performance et le SEO technique â€” lÃ  oÃ¹ l&apos;expertise fait
-                vraiment la diffÃ©rence.
+                performance et le SEO technique â€” lÃ  oÃ¹ l&apos;expertise
+                fait vraiment la diffÃ©rence.
               </p>
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#222222]">
+              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-(--border)">
                 {[
                   { value: "< 1 s", label: "Chargement moyen" },
                   { value: "95+", label: "Score Lighthouse" },
                   { value: "8 sem.", label: "DÃ©lai de livraison" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-2xl font-bold text-white">
+                    <div className="text-2xl font-bold text-(--fg)">
                       {stat.value}
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">
+                    <div className="text-xs text-(--fg-2) mt-0.5">
                       {stat.label}
                     </div>
                   </div>
@@ -163,10 +163,10 @@ export default async function ServicesPage() {
             {advantages.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex items-center gap-3 px-4 py-3 bg-[#161616] border border-[#2a2a2a] rounded-xl"
+                className="flex items-center gap-3 px-4 py-3 bg-(--bg-card) border border-(--border) rounded-xl"
               >
                 <Icon size={15} className="text-amber-400 shrink-0" />
-                <span className="text-xs text-gray-300 font-medium">
+                <span className="text-xs text-(--fg-2) font-medium">
                   {label}
                 </span>
               </div>
@@ -187,15 +187,15 @@ export default async function ServicesPage() {
               return (
                 <div
                   key={service.slug}
-                  className="group p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl hover:border-amber-400/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] flex flex-col"
+                  className="group p-8 bg-(--bg-card) border border-(--border) rounded-2xl hover:border-(--accent-border) transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] flex flex-col"
                 >
                   <div className="w-10 h-10 mb-6 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
                     <Icon size={19} />
                   </div>
-                  <h3 className="text-base font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">
+                  <h3 className="text-base font-bold text-(--fg) mb-3 group-hover:text-amber-400 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-5 grow">
+                  <p className="text-(--fg-2) text-sm leading-relaxed mb-5 grow">
                     {service.excerpt?.replace(/<[^>]*>/g, "") ||
                       service.description}
                   </p>
@@ -204,7 +204,7 @@ export default async function ServicesPage() {
                       {tags.map((tag: string) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 text-[10px] font-semibold text-gray-300 bg-[#0d0d0d] border border-[#262626] rounded-full"
+                          className="px-2.5 py-1 text-[10px] font-semibold text-(--fg-2) bg-(--bg) border border-(--border) rounded-full"
                         >
                           {tag}
                         </span>
@@ -214,7 +214,7 @@ export default async function ServicesPage() {
                   {!isFallback && (
                     <Link
                       href={`/services/${service.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 group-hover:text-amber-400 transition-colors"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-(--fg-2) group-hover:text-amber-400 transition-colors"
                     >
                       En savoir plus <ArrowUpRight size={13} />
                     </Link>
@@ -227,13 +227,13 @@ export default async function ServicesPage() {
       </section>
 
       {/* Notre Processus */}
-      <section className="py-24 bg-[#0e0e0e] border-t border-[#222222]">
+      <section className="py-24 bg-(--bg-2) border-t border-(--border)">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-14">
             <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">
               MÃ©thodologie
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-(--fg) tracking-tight leading-tight">
               Comment nous
               <br />
               travaillons.
@@ -246,12 +246,12 @@ export default async function ServicesPage() {
                   <span className="text-xs font-bold text-amber-400 tabular-nums">
                     {step.number}
                   </span>
-                  <div className="h-px flex-1 bg-[#252525]" />
+                  <div className="h-px flex-1 bg-(--border)" />
                 </div>
-                <h3 className="text-white font-bold text-base mb-3">
+                <h3 className="text-(--fg) font-bold text-base mb-3">
                   {step.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <p className="text-(--fg-2) text-sm leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -261,14 +261,14 @@ export default async function ServicesPage() {
       </section>
 
       {/* Stack Technique */}
-      <section className="py-20 border-t border-[#222222]">
+      <section className="py-20 border-t border-(--border)">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-start gap-12">
             <div className="shrink-0 md:w-56">
               <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">
                 Stack Technique
               </p>
-              <h2 className="text-2xl font-bold text-white leading-tight">
+              <h2 className="text-2xl font-bold text-(--fg) leading-tight">
                 Technologies
                 <br />
                 maÃ®trisÃ©es.
@@ -278,7 +278,7 @@ export default async function ServicesPage() {
               {techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 text-xs font-semibold text-gray-300 bg-[#161616] border border-[#2a2a2a] rounded-full hover:border-amber-400/40 hover:text-white transition-colors"
+                  className="px-4 py-2 text-xs font-semibold text-(--fg-2) bg-(--bg-card) border border-(--border) rounded-full hover:border-(--accent-border) hover:text-(--fg) transition-colors"
                 >
                   {tech}
                 </span>
@@ -289,17 +289,18 @@ export default async function ServicesPage() {
       </section>
 
       {/* CTA B2B Premium */}
-      <section className="py-24 border-t border-[#222222]">
+      <section className="py-24 border-t border-(--border)">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="group relative overflow-hidden bg-(--bg-card) border border-(--border) hover:border-(--accent-border) rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] p-12 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-400/10 rounded-full blur-[100px] group-hover:bg-amber-400/10 transition-colors duration-500 pointer-events-none" />
             <div className="relative z-10 max-w-xl">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors">
+              <h2 className="text-3xl md:text-4xl font-bold text-(--fg) mb-4 group-hover:text-amber-400 transition-colors">
                 Vous avez un projet en tÃªte ?
               </h2>
-              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-                Premier Ã©change gratuit â€” 30 min pour analyser votre situation
-                et vous proposer une approche concrÃ¨te, sans engagement.
+              <p className="text-(--fg-2) text-sm md:text-base leading-relaxed">
+                Premier Ã©change gratuit â€” 30 min pour analyser votre
+                situation et vous proposer une approche concrÃ¨te, sans
+                engagement.
               </p>
             </div>
             <Link

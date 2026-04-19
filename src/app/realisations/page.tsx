@@ -13,20 +13,20 @@ export default async function RealisationsPage() {
   const realisations = (await getAllRealisations()) || [];
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-28">
+    <div className="bg-(--bg) min-h-screen pt-28">
       {/* Hero */}
-      <section className="py-32 border-b border-[#222222]">
+      <section className="py-32 border-b border-(--border)">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-6">
             Portfolio
           </p>
           <div className="grid md:grid-cols-2 gap-8 items-end">
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[0.92]">
+            <h1 className="text-5xl md:text-7xl font-bold text-(--fg) tracking-tight leading-[0.92]">
               Nos projets
               <br />
               signatures.
             </h1>
-            <p className="text-gray-300 text-lg leading-relaxed max-w-md">
+            <p className="text-(--fg-2) text-lg leading-relaxed max-w-md">
               Chaque projet est une collaboration unique. Voici quelques
               réalisations dont nous sommes fiers.
             </p>
@@ -46,12 +46,12 @@ export default async function RealisationsPage() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="p-6 bg-[#161616] border border-[#2a2a2a] rounded-2xl text-center"
+                className="p-6 bg-(--bg-card) border border-(--border) rounded-2xl text-center"
               >
-                <div className="text-3xl font-bold text-white mb-1">
+                <div className="text-3xl font-bold text-(--fg) mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs text-gray-400">{stat.label}</div>
+                <div className="text-xs text-(--fg-2)">{stat.label}</div>
               </div>
             ))}
           </div>

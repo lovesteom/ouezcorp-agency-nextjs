@@ -17,7 +17,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-28">
+    <div className="bg-(--bg) min-h-screen pt-28">
       <div className="max-w-7xl mx-auto px-6 py-32">
         {/* Header */}
         <div className="mb-20">
@@ -25,12 +25,12 @@ export default function ContactPage() {
             Discutons
           </p>
           <div className="grid md:grid-cols-2 gap-8 items-end">
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[0.92]">
+            <h1 className="text-5xl md:text-7xl font-bold text-(--fg) tracking-tight leading-[0.92]">
               Parlons de
               <br />
               votre projet.
             </h1>
-            <p className="text-gray-400 text-lg leading-relaxed max-w-md">
+            <p className="text-(--fg-2) text-lg leading-relaxed max-w-md">
               Remplissez le formulaire et nous vous revenons sous 24&nbsp;h avec
               une proposition adaptée à vos besoins.
             </p>
@@ -47,7 +47,7 @@ export default function ContactPage() {
                 content: (
                   <a
                     href="mailto:contact@ouezcorp.com"
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                    className="text-(--fg-2) hover:text-(--fg) transition-colors text-sm"
                   >
                     contact@ouezcorp.com
                   </a>
@@ -57,7 +57,7 @@ export default function ContactPage() {
                 icon: Clock,
                 title: "Délai de réponse",
                 content: (
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-(--fg-2) text-sm">
                     Sous 24 heures ouvrées
                   </p>
                 ),
@@ -66,7 +66,7 @@ export default function ContactPage() {
                 icon: MessageSquare,
                 title: "Appel découverte",
                 content: (
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-(--fg-2) text-sm">
                     Gratuit — 30 min pour discuter de votre projet
                   </p>
                 ),
@@ -74,12 +74,12 @@ export default function ContactPage() {
             ].map(({ icon: Icon, title, content }) => (
               <div
                 key={title}
-                className="p-6 bg-[#161616] border border-[#2a2a2a] rounded-2xl"
+                className="p-6 bg-(--bg-card) border border-(--border) rounded-2xl"
               >
                 <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400 mb-4">
                   <Icon size={19} />
                 </div>
-                <h3 className="text-white font-semibold text-sm mb-2">
+                <h3 className="text-(--fg) font-semibold text-sm mb-2">
                   {title}
                 </h3>
                 {content}
@@ -90,27 +90,27 @@ export default function ContactPage() {
           {/* Formulaire */}
           <div className="md:col-span-3">
             {success ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-16 bg-[#111111] border border-amber-400/20 rounded-2xl">
+              <div className="h-full flex flex-col items-center justify-center text-center p-16 bg-(--bg-card) border border-amber-400/20 rounded-2xl">
                 <div className="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center mb-6">
                   <ArrowUpRight size={30} className="text-amber-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
+                <h3 className="text-2xl font-bold text-(--fg) mb-3">
                   Message envoyé !
                 </h3>
-                <p className="text-gray-400 text-sm">
+                <p className="text-(--fg-2) text-sm">
                   Nous vous revenons sous 24&nbsp;h. À très vite&nbsp;!
                 </p>
               </div>
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="space-y-5 p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl"
+                className="space-y-5 p-8 bg-(--bg-card) border border-(--border) rounded-2xl"
               >
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                      className="block text-xs font-semibold text-(--fg-3) uppercase tracking-wider mb-2"
                     >
                       Nom complet
                     </label>
@@ -118,14 +118,14 @@ export default function ContactPage() {
                       type="text"
                       id="name"
                       required
-                      className="w-full px-4 py-3 bg-[#0d0d0d] border border-[#2e2e2e] rounded-xl focus:ring-1 focus:ring-amber-400/50 focus:border-amber-400/40 outline-none transition-all text-white placeholder:text-gray-600 text-sm"
+                      className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) text-sm"
                       placeholder="John Doe"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                      className="block text-xs font-semibold text-(--fg-3) uppercase tracking-wider mb-2"
                     >
                       Email
                     </label>
@@ -133,7 +133,7 @@ export default function ContactPage() {
                       type="email"
                       id="email"
                       required
-                      className="w-full px-4 py-3 bg-[#0d0d0d] border border-[#2e2e2e] rounded-xl focus:ring-1 focus:ring-amber-400/50 focus:border-amber-400/40 outline-none transition-all text-white placeholder:text-gray-600 text-sm"
+                      className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) text-sm"
                       placeholder="john@company.com"
                     />
                   </div>
@@ -142,13 +142,13 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                    className="block text-xs font-semibold text-(--fg-3) uppercase tracking-wider mb-2"
                   >
                     Type de projet
                   </label>
                   <select
                     id="subject"
-                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-[#2e2e2e] rounded-xl focus:ring-1 focus:ring-amber-400/50 focus:border-amber-400/40 outline-none transition-all text-white text-sm"
+                    className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) text-sm"
                   >
                     <option>Site Vitrine Headless</option>
                     <option>E-commerce sur mesure</option>
@@ -161,13 +161,13 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="budget"
-                    className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                    className="block text-xs font-semibold text-(--fg-3) uppercase tracking-wider mb-2"
                   >
                     Budget indicatif
                   </label>
                   <select
                     id="budget"
-                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-[#2e2e2e] rounded-xl focus:ring-1 focus:ring-amber-400/50 focus:border-amber-400/40 outline-none transition-all text-white text-sm"
+                    className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) text-sm"
                   >
                     <option>Moins de 5 000 €</option>
                     <option>5 000 € – 15 000 €</option>
@@ -180,7 +180,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                    className="block text-xs font-semibold text-(--fg-3) uppercase tracking-wider mb-2"
                   >
                     Votre projet
                   </label>
@@ -188,7 +188,7 @@ export default function ContactPage() {
                     id="message"
                     required
                     rows={5}
-                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-[#2e2e2e] rounded-xl focus:ring-1 focus:ring-amber-400/50 focus:border-amber-400/40 outline-none transition-all text-white placeholder:text-gray-600 resize-none text-sm"
+                    className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) resize-none text-sm"
                     placeholder="Décrivez votre projet, vos objectifs et vos contraintes…"
                   ></textarea>
                 </div>
@@ -212,8 +212,8 @@ export default function ContactPage() {
         </div>
 
         {/* FAQ */}
-        <section className="pt-16 mt-4 border-t border-[#222222]">
-          <h2 className="text-2xl font-bold text-white mb-8">
+        <section className="pt-16 mt-4 border-t border-(--border)">
+          <h2 className="text-2xl font-bold text-(--fg) mb-8">
             Questions fréquentes
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -237,10 +237,10 @@ export default function ContactPage() {
             ].map(({ q, a }) => (
               <div
                 key={q}
-                className="p-6 bg-[#161616] border border-[#2a2a2a] rounded-2xl"
+                className="p-6 bg-(--bg-card) border border-(--border) rounded-2xl"
               >
-                <h3 className="text-white font-semibold text-sm mb-2">{q}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{a}</p>
+                <h3 className="text-(--fg) font-semibold text-sm mb-2">{q}</h3>
+                <p className="text-(--fg-2) text-sm leading-relaxed">{a}</p>
               </div>
             ))}
           </div>
