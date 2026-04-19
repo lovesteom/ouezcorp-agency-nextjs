@@ -40,12 +40,12 @@ export default async function RealisationPage({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-20">
+    <div className="bg-(--bg) min-h-screen pt-20">
       <article className="max-w-5xl mx-auto px-6 py-24">
         {/* Retour */}
         <Link
           href="/realisations"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-14 group"
+          className="inline-flex items-center gap-2 text-sm text-(--fg-3) hover:text-(--fg) transition-colors mb-14 group"
         >
           <ArrowLeft
             size={15}
@@ -58,7 +58,7 @@ export default async function RealisationPage({ params }: PageProps) {
         <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">
           Projet
         </p>
-        <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight mb-14">
+        <h1 className="text-4xl md:text-6xl font-bold text-(--fg) tracking-tight leading-tight mb-14">
           {realisation.title}
         </h1>
 
@@ -79,14 +79,14 @@ export default async function RealisationPage({ params }: PageProps) {
           ].map((item) => (
             <div
               key={item.label}
-              className="p-6 bg-[#161616] border border-[#2a2a2a] rounded-2xl"
+              className="p-6 bg-(--bg-card) border border-(--border) rounded-2xl"
             >
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">
+              <p className="text-[10px] font-bold text-(--fg-3) uppercase tracking-widest mb-2">
                 {item.label}
               </p>
               <p
                 className={`text-base font-semibold ${
-                  item.accent ? "text-amber-400" : "text-white"
+                  item.accent ? "text-(--accent)" : "text-(--fg)"
                 }`}
               >
                 {item.value}
@@ -97,7 +97,7 @@ export default async function RealisationPage({ params }: PageProps) {
 
         {/* Image principale */}
         {realisation.featuredImage?.node?.sourceUrl && (
-          <div className="relative h-[500px] w-full mb-14 rounded-2xl overflow-hidden border border-[#2a2a2a]">
+          <div className="relative h-[500px] w-full mb-14 rounded-2xl overflow-hidden border border-(--border)">
             <Image
               src={realisation.featuredImage.node.sourceUrl}
               alt={realisation.title}
@@ -110,14 +110,14 @@ export default async function RealisationPage({ params }: PageProps) {
 
         {/* Contenu */}
         <div
-          className="prose prose-invert prose-lg max-w-none mb-16 prose-headings:font-bold prose-headings:text-white prose-headings:tracking-tight prose-a:text-amber-400 hover:prose-a:text-amber-300 prose-p:text-gray-400 prose-p:leading-relaxed prose-li:text-gray-400"
+          className="prose prose-lg max-w-none mb-16 prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2)"
           dangerouslySetInnerHTML={{ __html: realisation.content }}
         />
 
         {/* Galerie */}
         {realisation.realisationsFields?.galerie?.nodes?.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-2xl font-bold text-white tracking-tight mb-8">
+            <h2 className="text-2xl font-bold text-(--fg) tracking-tight mb-8">
               Galerie du projet
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -125,7 +125,7 @@ export default async function RealisationPage({ params }: PageProps) {
                 (image: any, index: number) => (
                   <div
                     key={index}
-                    className="relative h-64 rounded-2xl overflow-hidden border border-[#2a2a2a]"
+                    className="relative h-64 rounded-2xl overflow-hidden border border-(--border)"
                   >
                     <Image
                       src={image.sourceUrl}
@@ -141,12 +141,12 @@ export default async function RealisationPage({ params }: PageProps) {
         )}
 
         {/* CTA bas */}
-        <div className="p-8 bg-[#161616] border border-[#2a2a2a] rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+          className="p-8 bg-(--bg-card) border border-(--border) rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6"
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">
+            <h3 className="text-lg font-bold text-(--fg) mb-1">
               Un projet similaire ?
             </h3>
-            <p className="text-gray-500 text-sm">
+            <p className="text-(--fg-3) text-sm">
               Contactez-nous pour discuter de votre vision.
             </p>
           </div>

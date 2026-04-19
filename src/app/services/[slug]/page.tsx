@@ -40,7 +40,7 @@ export default async function ServicePage({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-32 pb-24 overflow-hidden relative">
+    <div className="bg-(--bg) min-h-screen pt-32 pb-24 overflow-hidden relative">
       {/* Decorative ambient background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/10 rounded-[100%] blur-[120px] pointer-events-none" />
 
@@ -66,11 +66,11 @@ export default async function ServicePage({ params }: PageProps) {
             </span>
             Service Expert
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold text-(--fg) tracking-tight leading-tight mb-6">
             {service.title}
           </h1>
           {service.excerpt && (
-            <p className="text-xl text-gray-400 max-w-2xl leading-relaxed">
+            <p className="text-xl text-(--fg-2) max-w-2xl leading-relaxed">
               {service.excerpt.replace(/<[^>]*>/g, "")}
             </p>
           )}
@@ -91,27 +91,27 @@ export default async function ServicePage({ params }: PageProps) {
         )}
 
         {/* Contenu Riche */}
-        <div className="bg-[#111111] border border-[#222] rounded-3xl p-8 md:p-14 shadow-2xl mb-20">
+        <div className="bg-(--bg-card) border border-(--border) rounded-3xl p-8 md:p-14 shadow-2xl mb-20">
           <div
-            className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-headings:tracking-tight prose-a:text-amber-400 hover:prose-a:text-amber-300 prose-strong:text-white prose-strong:font-semibold prose-p:text-gray-400 prose-p:leading-relaxed prose-li:text-gray-400 prose-code:text-amber-400 prose-code:bg-amber-400/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
+            className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-strong:text-(--fg) prose-strong:font-semibold prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2) prose-code:text-(--accent) prose-code:bg-(--accent-subtle) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
             dangerouslySetInnerHTML={{ __html: service.content }}
           />
         </div>
 
         {/* CTA B2B Premium */}
-        <div className="group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)]">
+        <div className="group relative overflow-hidden bg-(--bg-card) border border-(--border) hover:border-(--accent-border) rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)]">
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-[80px] group-hover:bg-amber-400/15 transition-colors duration-500 pointer-events-none" />
 
           <div className="relative p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors">
+              <h3 className="text-2xl md:text-3xl font-bold text-(--fg) mb-4 group-hover:text-(--accent) transition-colors">
                 Prêt à intégrer ce service à votre stratégie ?
               </h3>
-              <p className="text-gray-400 text-base mb-6">
+              <p className="text-(--fg-2) text-base mb-6">
                 Nos experts sont disponibles pour évaluer vos besoins techniques
                 et construire une solution sur mesure.
               </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-(--fg-2)">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-amber-400" />
                   Audit Gratuit

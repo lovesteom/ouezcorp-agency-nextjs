@@ -40,12 +40,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-[#0b0b0b] min-h-screen pt-20">
+    <div className="bg-(--bg) min-h-screen pt-20">
       <article className="max-w-3xl mx-auto px-6 py-24">
         {/* Retour */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-14 group"
+          className="inline-flex items-center gap-2 text-sm text-(--fg-3) hover:text-(--fg) transition-colors mb-14 group"
         >
           <ArrowLeft
             size={15}
@@ -69,15 +69,15 @@ export default async function BlogPostPage({ params }: PageProps) {
         )}
 
         {/* Titre */}
-        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-10">
+        <h1 className="text-4xl md:text-5xl font-bold text-(--fg) tracking-tight leading-tight mb-10">
           {post.title}
         </h1>
 
         {/* Auteur + date */}
-        <div className="flex items-center justify-between mb-12 pb-8 border-b border-[#222222]">
+        <div className="flex items-center justify-between mb-12 pb-8 border-b border-(--border)">
           <div className="flex items-center gap-3">
             {post.author?.node?.avatar?.url && (
-              <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#333333]">
+              <div className="relative w-9 h-9 rounded-full overflow-hidden border border-(--border-strong)">
                 <Image
                   src={post.author.node.avatar.url}
                   alt={post.author.node.name}
@@ -86,11 +86,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                 />
               </div>
             )}
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium text-(--fg)">
               {post.author?.node?.name || "OuezCorp Team"}
             </span>
           </div>
-          <time dateTime={post.date} className="text-xs text-gray-500">
+          <time dateTime={post.date} className="text-xs text-(--fg-3)">
             {new Date(post.date).toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "long",
@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* Image à la une */}
         {post.featuredImage?.node?.sourceUrl && (
-          <div className="relative h-[420px] w-full mb-14 rounded-2xl overflow-hidden border border-[#2a2a2a]">
+          <div className="relative h-[420px] w-full mb-14 rounded-2xl overflow-hidden border border-(--border)">
             <Image
               src={post.featuredImage.node.sourceUrl}
               alt={post.title}
@@ -114,7 +114,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* Contenu */}
         <div
-          className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-headings:tracking-tight prose-a:text-amber-400 hover:prose-a:text-amber-300 prose-strong:text-white prose-p:text-gray-400 prose-p:leading-relaxed prose-li:text-gray-400 prose-code:text-amber-400 prose-code:bg-amber-400/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
+          className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-strong:text-(--fg) prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2) prose-code:text-(--accent) prose-code:bg-(--accent-subtle) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
