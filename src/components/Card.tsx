@@ -28,37 +28,53 @@ export default function Card({
   const content = (
     <article
       className={cn(
-        "group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] rounded-2xl transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1",
+        "card-interactive group relative overflow-hidden rounded-2xl",
         className,
       )}
     >
       {image && (
-        <div className="relative h-56 w-full overflow-hidden">
+        <div className="relative h-52 w-full overflow-hidden">
           <Image
             src={image}
             alt={title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#161616] via-[#161616]/30 to-transparent" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top, var(--bg-card) 0%, transparent 100%)",
+            }}
+          />
         </div>
       )}
 
       <div className="p-6">
         {category && (
-          <span className="inline-block px-3 py-1 mb-4 text-[10px] font-bold tracking-widest text-amber-400 uppercase bg-amber-400/10 rounded-full">
+          <span
+            className="inline-block px-3 py-1 mb-4 text-[10px] font-bold
+            tracking-widest text-(--accent) uppercase bg-(--accent-subtle)
+            border border-(--accent-border) rounded-full"
+          >
             {category}
           </span>
         )}
-        <h3 className="text-base font-bold text-white mb-2 group-hover:text-amber-400 transition-colors leading-snug">
+        <h3
+          className="text-base font-bold text-(--fg) mb-2
+          group-hover:text-(--accent) transition-colors leading-snug"
+        >
           {title}
         </h3>
-        <p className="text-gray-300 text-sm line-clamp-3 leading-relaxed">
+        <p className="text-(--fg-2) text-sm line-clamp-3 leading-relaxed">
           {description}
         </p>
 
         {url && (
-          <div className="mt-5 flex items-center gap-1 text-xs font-semibold text-gray-400 group-hover:text-amber-400 transition-colors">
+          <div
+            className="mt-5 flex items-center gap-1 text-xs font-semibold
+            text-(--fg-3) group-hover:text-(--accent) transition-colors"
+          >
             En savoir plus
             <ArrowUpRight
               size={13}
@@ -80,3 +96,4 @@ export default function Card({
 
   return content;
 }
+

@@ -1,4 +1,4 @@
-import { getAllServices } from "@/lib/api";
+﻿import { getAllServices } from "@/lib/api";
 import Link from "next/link";
 import { Metadata } from "next";
 import {
@@ -16,9 +16,9 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Nos Services — OuezCorp",
+  title: "Nos Services â€” OuezCorp",
   description:
-    "Développement Headless Next.js & WordPress, e-commerce sur mesure, SEO technique, UI/UX Design. Livraison en 4 à 8 semaines, score Lighthouse > 95.",
+    "DÃ©veloppement Headless Next.js & WordPress, e-commerce sur mesure, SEO technique, UI/UX Design. Livraison en 4 Ã  8 semaines, score Lighthouse > 95.",
 };
 
 export const revalidate = 60;
@@ -28,37 +28,37 @@ const iconMap = [Code2, ShoppingCart, Search, Globe, Palette, Zap];
 const fallbackServices = [
   {
     slug: "headless",
-    title: "Développement Headless",
+    title: "DÃ©veloppement Headless",
     excerpt:
-      "Architecture découplée Next.js 15 (App Router) + WordPress via WPGraphQL. Server Components, ISR, Edge Rendering. Chargement < 1 s, score Lighthouse > 95 garanti.",
+      "Architecture dÃ©couplÃ©e Next.js 15 (App Router) + WordPress via WPGraphQL. Server Components, ISR, Edge Rendering. Chargement < 1Â s, score Lighthouse > 95 garanti.",
     tags: ["Next.js 15", "WordPress", "WPGraphQL", "TypeScript"],
   },
   {
     slug: "ecommerce",
     title: "E-commerce sur mesure",
     excerpt:
-      "Boutiques haute performance avec WooCommerce Headless ou Shopify Storefront API. Panier optimiste, Stripe, stocks temps réel. Taux de conversion +28 % en moyenne.",
+      "Boutiques haute performance avec WooCommerce Headless ou Shopify Storefront API. Panier optimiste, Stripe, stocks temps rÃ©el. Taux de conversion +28Â % en moyenne.",
     tags: ["WooCommerce", "Shopify", "Stripe", "Next.js"],
   },
   {
     slug: "seo",
     title: "SEO Technique",
     excerpt:
-      "Audit Core Web Vitals, structured data Schema.org, sitemap dynamique, hreflang, Next/Image optimisé. Rapport mensuel des positions et actions correctives inclus.",
+      "Audit Core Web Vitals, structured data Schema.org, sitemap dynamique, hreflang, Next/Image optimisÃ©. Rapport mensuel des positions et actions correctives inclus.",
     tags: ["Core Web Vitals", "Schema.org", "GA4", "Search Console"],
   },
   {
     slug: "international",
     title: "Sites Multilingues",
     excerpt:
-      "Internationalisation avec next-intl, routing par locale, traductions WPML/Polylang, hreflang configuré. Compatible 20+ langues, SEO local inclus.",
+      "Internationalisation avec next-intl, routing par locale, traductions WPML/Polylang, hreflang configurÃ©. Compatible 20+ langues, SEO local inclus.",
     tags: ["next-intl", "WPML", "i18next", "hreflang"],
   },
   {
     slug: "design",
     title: "UI/UX Design",
     excerpt:
-      "Design System Figma → Storybook, composants accessibles WCAG 2.1 AA, animations Framer Motion. Prototype validé avec vous avant le moindre développement.",
+      "Design System Figma â†’ Storybook, composants accessibles WCAG 2.1 AA, animations Framer Motion. Prototype validÃ© avec vous avant le moindre dÃ©veloppement.",
     tags: ["Figma", "Storybook", "Framer Motion", "WCAG 2.1"],
   },
 ];
@@ -66,27 +66,27 @@ const fallbackServices = [
 const processSteps = [
   {
     number: "01",
-    title: "Découverte",
+    title: "DÃ©couverte",
     description:
-      "Audit de l'existant, benchmark concurrentiel, définition des KPIs. Livrable : cahier des charges technique. Durée : 3–5 jours ouvrés.",
+      "Audit de l'existant, benchmark concurrentiel, dÃ©finition des KPIs. LivrableÂ : cahier des charges technique. DurÃ©eÂ : 3â€“5 jours ouvrÃ©s.",
   },
   {
     number: "02",
     title: "Architecture & Design",
     description:
-      "Choix du stack, wireframes fonctionnels, Design System Figma complet. Chaque écran est validé avec vous avant le moindre code.",
+      "Choix du stack, wireframes fonctionnels, Design System Figma complet. Chaque Ã©cran est validÃ© avec vous avant le moindre code.",
   },
   {
     number: "03",
-    title: "Développement",
+    title: "DÃ©veloppement",
     description:
-      "Sprints bi-hebdomadaires, tests E2E Playwright, CI/CD GitHub Actions. Accès à l'environnement de staging dès la première semaine.",
+      "Sprints bi-hebdomadaires, tests E2E Playwright, CI/CD GitHub Actions. AccÃ¨s Ã  l'environnement de staging dÃ¨s la premiÃ¨re semaine.",
   },
   {
     number: "04",
-    title: "Déploiement & Suivi",
+    title: "DÃ©ploiement & Suivi",
     description:
-      "Mise en production Vercel ou serveur dédié, monitoring Sentry, rapport mensuel des métriques de trafic et de performance.",
+      "Mise en production Vercel ou serveur dÃ©diÃ©, monitoring Sentry, rapport mensuel des mÃ©triques de trafic et de performance.",
   },
 ];
 
@@ -106,9 +106,9 @@ const techStack = [
 ];
 
 const advantages = [
-  { icon: Timer, label: "Livraison en 4 à 8 semaines" },
-  { icon: BarChart3, label: "ROI mesurable dès le 1er mois" },
-  { icon: Shield, label: "Code source livré & documenté" },
+  { icon: Timer, label: "Livraison en 4 Ã  8 semaines" },
+  { icon: BarChart3, label: "ROI mesurable dÃ¨s le 1er mois" },
+  { icon: Shield, label: "Code source livrÃ© & documentÃ©" },
   { icon: Layers, label: "Architecture scalable long terme" },
 ];
 
@@ -129,7 +129,7 @@ export default async function ServicesPage() {
             <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[0.92]">
               Des solutions
               <br />
-              web taillées
+              web taillÃ©es
               <br />
               pour performer.
             </h1>
@@ -137,14 +137,14 @@ export default async function ServicesPage() {
               <p className="text-gray-300 text-lg leading-relaxed max-w-md mb-10">
                 Nous n&apos;essayons pas de tout faire. Nous excellons dans
                 l&apos;architecture Headless, l&apos;e-commerce haute
-                performance et le SEO technique — là où l&apos;expertise fait
-                vraiment la différence.
+                performance et le SEO technique â€” lÃ  oÃ¹ l&apos;expertise fait
+                vraiment la diffÃ©rence.
               </p>
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#222222]">
                 {[
                   { value: "< 1 s", label: "Chargement moyen" },
                   { value: "95+", label: "Score Lighthouse" },
-                  { value: "8 sem.", label: "Délai de livraison" },
+                  { value: "8 sem.", label: "DÃ©lai de livraison" },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <div className="text-2xl font-bold text-white">
@@ -231,7 +231,7 @@ export default async function ServicesPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-14">
             <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">
-              Méthodologie
+              MÃ©thodologie
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
               Comment nous
@@ -271,7 +271,7 @@ export default async function ServicesPage() {
               <h2 className="text-2xl font-bold text-white leading-tight">
                 Technologies
                 <br />
-                maîtrisées.
+                maÃ®trisÃ©es.
               </h2>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -292,21 +292,21 @@ export default async function ServicesPage() {
       <section className="py-24 border-t border-[#222222]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-400/5 rounded-full blur-[100px] group-hover:bg-amber-400/10 transition-colors duration-500 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-400/10 rounded-full blur-[100px] group-hover:bg-amber-400/10 transition-colors duration-500 pointer-events-none" />
             <div className="relative z-10 max-w-xl">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors">
-                Vous avez un projet en tête ?
+                Vous avez un projet en tÃªte ?
               </h2>
               <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-                Premier échange gratuit — 30 min pour analyser votre situation
-                et vous proposer une approche concrète, sans engagement.
+                Premier Ã©change gratuit â€” 30 min pour analyser votre situation
+                et vous proposer une approche concrÃ¨te, sans engagement.
               </p>
             </div>
             <Link
               href="/contact"
               className="relative z-10 inline-flex items-center gap-2 px-8 py-4 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-full transition-all duration-300 whitespace-nowrap shrink-0 shadow-[0_4px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_8px_32px_rgba(251,191,36,0.5)] hover:-translate-y-1"
             >
-              Démarrer l&apos;échange <ArrowUpRight size={18} />
+              DÃ©marrer l&apos;Ã©change <ArrowUpRight size={18} />
             </Link>
           </div>
         </div>

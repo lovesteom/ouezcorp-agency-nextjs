@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, ArrowUpRight, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpRight, Clock } from "lucide-react";
 
 interface BlogPost {
   slug: string;
@@ -67,31 +67,51 @@ const defaultPosts: BlogPost[] = [
   },
 ];
 
-const categoryColorMap: Record<string, string> = {
-  "Next.js": "text-amber-400",
-  SEO: "text-sky-400",
-  "E-commerce": "text-orange-400",
-  CSS: "text-violet-400",
-  Auth: "text-pink-400",
-  TypeScript: "text-blue-400",
-  Performance: "text-emerald-400",
-};
-
-const categoryBgMap: Record<string, string> = {
-  "Next.js": "bg-amber-400/10 border-amber-400/20",
-  SEO: "bg-sky-400/10 border-sky-400/20",
-  "E-commerce": "bg-orange-400/10 border-orange-400/20",
-  CSS: "bg-violet-400/10 border-violet-400/20",
-  Auth: "bg-pink-400/10 border-pink-400/20",
-  TypeScript: "bg-blue-400/10 border-blue-400/20",
-  Performance: "bg-emerald-400/10 border-emerald-400/20",
+const categoryStyles: Record<
+  string,
+  { text: string; bg: string; border: string }
+> = {
+  "Next.js": {
+    text: "text-amber-400",
+    bg: "bg-amber-400/10",
+    border: "border-amber-400/20",
+  },
+  SEO: {
+    text: "text-sky-400",
+    bg: "bg-sky-400/10",
+    border: "border-sky-400/20",
+  },
+  "E-commerce": {
+    text: "text-orange-400",
+    bg: "bg-orange-400/10",
+    border: "border-orange-400/20",
+  },
+  CSS: {
+    text: "text-violet-400",
+    bg: "bg-violet-400/10",
+    border: "border-violet-400/20",
+  },
+  Auth: {
+    text: "text-pink-400",
+    bg: "bg-pink-400/10",
+    border: "border-pink-400/20",
+  },
+  TypeScript: {
+    text: "text-blue-400",
+    bg: "bg-blue-400/10",
+    border: "border-blue-400/20",
+  },
+  Performance: {
+    text: "text-emerald-400",
+    bg: "bg-emerald-400/10",
+    border: "border-emerald-400/20",
+  },
 };
 
 const quickLinks = [
   { label: "Tous les articles", href: "/blog" },
   { label: "Next.js", href: "/blog" },
   { label: "SEO Technique", href: "/blog" },
-  { label: "E-commerce", href: "/blog" },
   { label: "Performance Web", href: "/blog" },
 ];
 
@@ -100,23 +120,50 @@ export default function BlogShowcase({
 }: BlogShowcaseProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollRight = () => {
-    scrollRef.current?.scrollBy({ left: 370, behavior: "smooth" });
+  const scroll = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({
+      left: dir === "right" ? 360 : -360,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <section className="py-32 bg-[#0b0b0b] border-t border-[#222222]">
-      {/* En-tête façon Apple */}
-      <div className="max-w-7xl mx-auto px-6 mb-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
-          Le blog.{" "}
-          <span className="text-gray-400 font-normal">
-            Insights techniques, tutoriels et retours d&apos;expérience.
-          </span>
-        </h2>
+    <section className="py-28 bg-(--bg) border-t border-(--border)">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 mb-10 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-(--accent) mb-3">
+            Blog
+          </p>
+          <h2 className="text-2xl md:text-3xl font-bold text-(--fg)">
+            Insights &amp; Tutoriels.{" "}
+            <span className="text-(--fg-3) font-normal">
+              Expertise technique partagée.
+            </span>
+          </h2>
+        </div>
+        <div className="hidden sm:flex gap-2 shrink-0">
+          {(["left", "right"] as const).map((dir) => (
+            <button
+              key={dir}
+              onClick={() => scroll(dir)}
+              aria-label={dir === "left" ? "Précédent" : "Suivant"}
+              className="w-10 h-10 rounded-full border border-(--border) bg-(--bg-card)
+                flex items-center justify-center text-(--fg-2)
+                hover:border-(--border-strong) hover:text-(--fg)
+                transition-all duration-200"
+            >
+              {dir === "left" ? (
+                <ChevronLeft size={17} />
+              ) : (
+                <ChevronRight size={17} />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Défilement horizontal */}
+      {/* Scroll horizontal */}
       <div className="relative">
         <div
           ref={scrollRef}
@@ -124,73 +171,72 @@ export default function BlogShowcase({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {posts.map((post) => {
-            const categoryColor =
-              categoryColorMap[post.category] ?? "text-amber-400";
-            const categoryBg =
-              categoryBgMap[post.category] ??
-              "bg-amber-400/10 border-amber-400/20";
-
+            const cat =
+              categoryStyles[post.category] ?? categoryStyles["Next.js"];
             return (
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group snap-start shrink-0 w-72.5 md:w-82.5 rounded-3xl overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-white/20 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="card-interactive group snap-start shrink-0 w-72 md:w-80 rounded-2xl overflow-hidden flex flex-col"
               >
                 {/* Image */}
                 {post.image ? (
-                  <div className="relative h-44 overflow-hidden">
+                  <div className="relative h-44 overflow-hidden shrink-0">
                     <Image
                       src={post.image}
                       alt={post.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-[#161616]/70 to-transparent" />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(to top, var(--bg-card) 0%, transparent 100%)",
+                      }}
+                    />
                   </div>
                 ) : (
-                  <div className="h-2 w-full bg-linear-to-r from-[#222] to-[#1a1a1a]" />
+                  <div className={`h-1.5 w-full ${cat.bg}`} />
                 )}
 
                 {/* Contenu */}
-                <div className="p-7 flex flex-col grow">
-                  {/* Meta */}
+                <div className="p-6 flex flex-col grow">
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className={`inline-block px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase border rounded-full ${categoryColor} ${categoryBg}`}
+                      className={`inline-flex px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase
+                      border rounded-full ${cat.text} ${cat.bg} ${cat.border}`}
                     >
                       {post.category}
                     </span>
                     {post.readTime && (
-                      <span className="flex items-center gap-1 text-[10px] text-gray-500 font-medium">
-                        <Clock size={10} />
-                        {post.readTime}
+                      <span className="flex items-center gap-1 text-[10px] text-(--fg-3)">
+                        <Clock size={10} /> {post.readTime}
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-[0.95rem] font-bold text-white leading-snug mb-3 group-hover:opacity-80 transition-opacity grow">
+                  <h3
+                    className="text-sm font-bold text-(--fg) leading-snug mb-3
+                    group-hover:text-(--accent) transition-colors grow"
+                  >
                     {post.title}
                   </h3>
-
-                  <p className="text-sm text-gray-400 leading-relaxed line-clamp-2 mb-4">
+                  <p className="text-xs text-(--fg-2) leading-relaxed line-clamp-2 mb-4">
                     {post.excerpt}
                   </p>
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-[#232323]">
+                  <div className="flex items-center justify-between pt-4 border-t border-(--border)">
                     {post.date && (
-                      <span className="text-[10px] text-gray-500">
+                      <span className="text-[10px] text-(--fg-3)">
                         {post.date}
                       </span>
                     )}
                     <div
-                      className={`inline-flex items-center gap-1 text-xs font-semibold ${categoryColor} opacity-0 group-hover:opacity-100 transition-opacity ml-auto`}
+                      className={`inline-flex items-center gap-1 text-xs font-semibold ${cat.text}
+                      opacity-0 group-hover:opacity-100 transition-opacity ml-auto`}
                     >
-                      Lire l&apos;article
-                      <ArrowUpRight
-                        size={13}
-                        className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                      />
+                      Lire l&apos;article <ArrowUpRight size={12} />
                     </div>
                   </div>
                 </div>
@@ -198,43 +244,36 @@ export default function BlogShowcase({
             );
           })}
 
-          {/* Carte CTA */}
+          {/* CTA card */}
           <Link
             href="/blog"
-            className="snap-start shrink-0 w-55 rounded-3xl overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 hover:bg-[#1a1a1a] transition-all flex flex-col items-center justify-center p-8 gap-4 text-center group"
+            className="card-interactive group snap-start shrink-0 w-52 rounded-2xl
+              flex flex-col items-center justify-center p-8 gap-4 text-center
+              hover:border-(--accent-border) transition-all duration-200 hover:-translate-y-1"
           >
-            <div className="w-12 h-12 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
-              <ArrowUpRight size={20} className="text-amber-400" />
+            <div
+              className="w-11 h-11 rounded-full bg-(--accent-subtle) border border-(--accent-border)
+              flex items-center justify-center group-hover:bg-(--accent-subtle) transition-colors"
+            >
+              <ArrowUpRight size={18} className="text-(--accent)" />
             </div>
-            <p className="font-bold text-white text-sm leading-snug">
-              Tous les
-              <br />
-              articles
+            <p className="font-bold text-(--fg) text-sm leading-snug">
+              Tous les articles
             </p>
           </Link>
         </div>
-
-        {/* Bouton de défilement */}
-        <button
-          onClick={scrollRight}
-          aria-label="Défiler vers la droite"
-          className="absolute right-6 top-[45%] -translate-y-1/2 w-11 h-11 bg-[#2a2a2a] hover:bg-[#3a3a3a] border border-[#3d3d3d] rounded-full flex items-center justify-center transition-colors shadow-xl"
-        >
-          <ChevronRight size={18} className="text-white" />
-        </button>
       </div>
 
-      {/* Liens rapides */}
-      <div className="max-w-7xl mx-auto px-6 mt-10">
-        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
-          Thématiques
-        </p>
+      {/* Thématiques */}
+      <div className="max-w-7xl mx-auto px-6 mt-8">
         <div className="flex flex-wrap gap-2">
           {quickLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="px-5 py-2 text-xs font-medium text-gray-300 border border-[#2a2a2a] rounded-full hover:border-white/30 hover:text-white transition-all"
+              className="px-4 py-2 text-xs font-medium text-(--fg-2) border border-(--border)
+                rounded-full hover:border-(--border-strong) hover:text-(--fg)
+                transition-all duration-150"
             >
               {link.label}
             </Link>

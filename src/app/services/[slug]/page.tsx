@@ -42,13 +42,13 @@ export default async function ServicePage({ params }: PageProps) {
   return (
     <div className="bg-[#0b0b0b] min-h-screen pt-32 pb-24 overflow-hidden relative">
       {/* Decorative ambient background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/5 rounded-[100%] blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-400/10 rounded-[100%] blur-[120px] pointer-events-none" />
 
       <article className="max-w-4xl mx-auto px-6 relative z-10">
         {/* Navigation Retour */}
         <Link
           href="/services"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#2a2a2a] bg-[#111]/80 backdrop-blur-md text-sm text-gray-400 hover:text-white hover:border-amber-400/40 hover:bg-amber-400/5 transition-all duration-300 mb-16 group"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#2a2a2a] bg-black/80 backdrop-blur-md text-sm text-gray-400 hover:text-white hover:border-amber-400/40 hover:bg-amber-400/10 transition-all duration-300 mb-16 group"
         >
           <ArrowLeft
             size={16}
@@ -100,15 +100,16 @@ export default async function ServicePage({ params }: PageProps) {
 
         {/* CTA B2B Premium */}
         <div className="group relative overflow-hidden bg-[#161616] border border-[#2a2a2a] hover:border-amber-400/40 rounded-3xl transition-all duration-300 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)]">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/5 rounded-full blur-[80px] group-hover:bg-amber-400/10 transition-colors duration-500 pointer-events-none" />
-          
+          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-[80px] group-hover:bg-amber-400/15 transition-colors duration-500 pointer-events-none" />
+
           <div className="relative p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors">
                 Prêt à intégrer ce service à votre stratégie ?
               </h3>
               <p className="text-gray-400 text-base mb-6">
-                Nos experts sont disponibles pour évaluer vos besoins techniques et construire une solution sur mesure.
+                Nos experts sont disponibles pour évaluer vos besoins techniques
+                et construire une solution sur mesure.
               </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
                 <li className="flex items-center gap-2">
@@ -125,7 +126,7 @@ export default async function ServicePage({ params }: PageProps) {
                 </li>
               </ul>
             </div>
-            
+
             <Link
               href="/contact"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-full transition-all duration-300 whitespace-nowrap text-base shadow-[0_4px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_8px_32px_rgba(251,191,36,0.5)] hover:-translate-y-1 shrink-0 w-full md:w-auto"
@@ -134,7 +135,6 @@ export default async function ServicePage({ params }: PageProps) {
             </Link>
           </div>
         </div>
-
       </article>
     </div>
   );
