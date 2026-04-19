@@ -6,9 +6,9 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export const revalidate = 60;
@@ -23,7 +23,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
   if (!post) return {};
 
   return {
@@ -33,7 +34,8 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();

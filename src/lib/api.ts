@@ -1,5 +1,5 @@
-const API_URL =
-  process.env.WORDPRESS_API_URL || "https://your-wordpress-site.com/graphql";
+﻿const API_URL =
+  process.env.WORDPRESS_API_URL || "http://localhost/lipstickandfins/graphql";
 
 async function fetchAPI(query: string, variables: any = {}) {
   const headers: Record<string, string> = {
@@ -14,11 +14,7 @@ async function fetchAPI(query: string, variables: any = {}) {
   const res = await fetch(API_URL, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    // Revalidation config: Use ISR settings from user prompt: revalidate often
+    body: JSON.stringify({ query, variables }),
     next: { revalidate: 60 },
   }).catch((err) => {
     console.warn(
@@ -28,9 +24,7 @@ async function fetchAPI(query: string, variables: any = {}) {
     return null;
   });
 
-  if (!res) {
-    return {};
-  }
+  if (!res) return {};
 
   if (!res.ok) {
     console.error("Failed to fetch API", await res.text());
@@ -39,17 +33,70 @@ async function fetchAPI(query: string, variables: any = {}) {
 
   const json = await res.json();
   if (json.errors) {
-    console.error(json.errors);
-    // Instead of throwing, return null/empty to allow build to proceed with empty content
-    console.warn("GraphQL Errors:", json.errors);
+    console.error("GraphQL Errors:", json.errors);
     return {};
   }
   return json.data;
 }
 
-export async function getAllServices() {
+/* Posts */
+
+export async function getAllPosts() {
+  const data = await fetchAPI(`
+    query GetAllPosts {
+      posts {
+        nodes {
+          slug
+          title
+          excerpt
+          date
+          categories {
+            nodes { name slug }
+          }
+          featuredImage {
+            node { sourceUrl altText }
+          }
+        }
+      }
+    }
+  `);
+  return data?.posts?.nodes;
+}
+
+export async function getPostBySlug(slug: string) {
   const data = await fetchAPI(
     `
+    query GetPostBySlug($id: ID!, $idType: PostIdType!) {
+      post(id: $id, idType: $idType) {
+        title
+        content
+        slug
+        date
+        excerpt
+        featuredImage {
+          node { sourceUrl altText }
+        }
+        author {
+          node {
+            name
+            avatar { url }
+          }
+        }
+        categories {
+          nodes { name slug }
+        }
+      }
+    }
+  `,
+    { id: slug, idType: "SLUG" },
+  );
+  return data?.post;
+}
+
+/* Services */
+
+export async function getAllServices() {
+  const data = await fetchAPI(`
     query GetAllServices {
       services {
         nodes {
@@ -57,15 +104,12 @@ export async function getAllServices() {
           title
           excerpt
           featuredImage {
-            node {
-              sourceUrl
-            }
+            node { sourceUrl altText }
           }
         }
       }
     }
-  `,
-  );
+  `);
   return data?.services?.nodes;
 }
 
@@ -77,100 +121,62 @@ export async function getServiceBySlug(slug: string) {
         title
         content
         slug
+        excerpt
+        featuredImage {
+          node { sourceUrl altText }
+        }
         seo {
-          fullHead
+          title
+          metaDesc
         }
       }
     }
   `,
-    {
-      variables: { id: slug, idType: "SLUG" },
-    },
+    { id: slug, idType: "SLUG" },
   );
   return data?.service;
 }
 
+/* Realisations */
+
 export async function getAllRealisations() {
-  const data = await fetchAPI(
-    `
-      query GetAllRealisations {
-        realisations {
-          nodes {
-            slug
-            title
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
+  const data = await fetchAPI(`
+    query GetAllRealisations {
+      realisations {
+        nodes {
+          slug
+          title
+          excerpt
+          featuredImage {
+            node { sourceUrl altText }
           }
         }
       }
-    `,
-  );
+    }
+  `);
   return data?.realisations?.nodes;
 }
 
 export async function getRealisationBySlug(slug: string) {
   const data = await fetchAPI(
     `
-      query GetRealisationBySlug($id: ID!, $idType: RealisationIdType!) {
-        realisation(id: $id, idType: $idType) {
+    query GetRealisationBySlug($id: ID!, $idType: RealisationIdType!) {
+      realisation(id: $id, idType: $idType) {
+        title
+        content
+        slug
+        excerpt
+        featuredImage {
+          node { sourceUrl altText }
+        }
+        seo {
           title
-          content
-          slug
-          seo {
-            fullHead
-          }
+          metaDesc
         }
       }
-    `,
-    {
-      variables: { id: slug, idType: "SLUG" },
-    },
+    }
+  `,
+    { id: slug, idType: "SLUG" },
   );
   return data?.realisation;
-}
-
-export async function getAllPosts() {
-  const data = await fetchAPI(
-    `
-      query GetAllPosts {
-        posts {
-          nodes {
-            slug
-            title
-            excerpt
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
-          }
-        }
-      }
-    `,
-  );
-  return data?.posts?.nodes;
-}
-
-export async function getPostBySlug(slug: string) {
-  const data = await fetchAPI(
-    `
-      query GetPostBySlug($id: ID!, $idType: PostIdType!) {
-        post(id: $id, idType: $idType) {
-          title
-          content
-          slug
-          seo {
-            fullHead
-          }
-        }
-      }
-    `,
-    {
-      variables: { id: slug, idType: "SLUG" },
-    },
-  );
-  return data?.post;
 }
