@@ -1,19 +1,81 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const bricolageGrotesque = localFont({
+  src: [
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Bricolage_Grotesque/static/BricolageGrotesque-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  variable: "--font-heading",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const notoSans = localFont({
+  src: [
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/Noto_Sans/static/NotoSans-Italic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+  ],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -31,7 +93,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${bricolageGrotesque.variable} ${notoSans.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider
           attribute="class"

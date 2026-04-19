@@ -141,7 +141,7 @@ export default async function RealisationPage({ params }: PageProps) {
         )}
 
         {/* CTA bas */}
-          className="p-8 bg-(--bg-card) border border-(--border) rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6"
+        <div className="p-8 bg-(--bg-card) border border-(--border) rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-lg font-bold text-(--fg) mb-1">
               Un projet similaire ?
