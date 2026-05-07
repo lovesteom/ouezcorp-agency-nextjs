@@ -5,7 +5,7 @@ import { cancelTwoFactor, verifyTwoFactor } from "@/app/admin/login/actions";
 
 export default function TwoFactorForm() {
   const [state, formAction, isPending] = useActionState(verifyTwoFactor, {
-    error: null,
+    error: "",
   });
 
   return (

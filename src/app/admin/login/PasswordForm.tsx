@@ -5,7 +5,7 @@ import { loginWithPassword } from "@/app/admin/login/actions";
 
 export default function PasswordForm() {
   const [state, formAction, isPending] = useActionState(loginWithPassword, {
-    error: null,
+    error: "",
     success: false,
   });
 

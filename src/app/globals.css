@@ -23,7 +23,7 @@
 }
 
 /* ─── Design Tokens — Light ─── */
-.light {
+html.light {
   --bg: #fafafa;
   --bg-2: #f4f4f5;
   --bg-3: #ffffff;

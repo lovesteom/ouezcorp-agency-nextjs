@@ -7,23 +7,33 @@ import {
   startAdminLogin,
 } from "@/lib/auth/admin";
 
-export async function loginWithPassword(_prevState: any, formData: FormData) {
+type LoginState = { error: string; success: boolean };
+
+export async function loginWithPassword(
+  _prevState: LoginState,
+  formData: FormData,
+): Promise<LoginState> {
   const email = String(formData.get("email") || "");
   const password = String(formData.get("password") || "");
 
   if (!email || !password) {
-    return { error: "Email et mot de passe requis." };
+    return { error: "Email et mot de passe requis.", success: false };
   }
 
   const result = await startAdminLogin(email, password);
   if (!result.ok) {
-    return { error: result.error };
+    return { error: result.error ?? "Erreur inconnue.", success: false };
   }
 
-  return { success: true };
+  return { error: "", success: true };
 }
 
-export async function verifyTwoFactor(_prevState: any, formData: FormData) {
+type TwoFactorState = { error: string };
+
+export async function verifyTwoFactor(
+  _prevState: TwoFactorState,
+  formData: FormData,
+): Promise<TwoFactorState> {
   const code = String(formData.get("code") || "");
 
   if (!code) {
@@ -32,7 +42,7 @@ export async function verifyTwoFactor(_prevState: any, formData: FormData) {
 
   const result = await completeAdmin2FA(code);
   if (!result.ok) {
-    return { error: result.error };
+    return { error: result.error ?? "Erreur inconnue." };
   }
 
   redirect("/admin");
