@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -25,8 +23,8 @@ model Page {
   slug           String   @unique
   title          String
   content        String?  @db.Text
-  images         String?  @db.Text // JSON string to store images URLs
-  links          String?  @db.Text // JSON string for links
+  images         String?  @db.Text
+  links          String?  @db.Text
   seoTitle       String?
   seoDescription String?
   seoKeywords    String?
@@ -38,9 +36,65 @@ model SiteContent {
   id        String   @id @default(cuid())
   key       String   @unique
   value     String   @db.Text
-  type      String   @default("TEXT") // "TEXT", "IMAGE", "RICH_TEXT"
-  group     String   @default("GLOBAL") // To structure it (ex: "Homepage", "Footer")
-  label     String   // Friendly name like "Hero Title"
+  type      String   @default("TEXT")
+  group     String   @default("GLOBAL")
+  label     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Articles de blog
+model Post {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  excerpt        String?  @db.Text
+  content        String?  @db.Text
+  featuredImage  String?
+  author         String?  @default("OuezCorp Team")
+  categories     String?  @db.Text // JSON: ["Next.js","SEO"]
+  published      Boolean  @default(true)
+  publishedAt    DateTime @default(now())
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// Services proposés
+model Service {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  excerpt        String?  @db.Text
+  content        String?  @db.Text
+  featuredImage  String?
+  tags           String?  @db.Text // JSON: ["Next.js","TypeScript"]
+  order          Int      @default(0)
+  published      Boolean  @default(true)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// Réalisations / portfolio
+model Realisation {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  excerpt        String?  @db.Text
+  content        String?  @db.Text
+  featuredImage  String?
+  client         String?
+  stack          String?
+  result         String?
+  gallery        String?  @db.Text // JSON: ["url1","url2"]
+  tags           String?  @db.Text
+  order          Int      @default(0)
+  published      Boolean  @default(true)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

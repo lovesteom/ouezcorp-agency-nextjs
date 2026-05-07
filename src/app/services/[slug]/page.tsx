@@ -27,8 +27,8 @@ export async function generateMetadata({
   if (!service) return {};
 
   return {
-    title: service.seo?.title || service.title,
-    description: service.seo?.metaDesc || service.excerpt,
+    title: service.seoTitle || service.title,
+    description: service.seoDescription || service.excerpt || "",
   };
 }
 
@@ -71,17 +71,17 @@ export default async function ServicePage({ params }: PageProps) {
           </h1>
           {service.excerpt && (
             <p className="text-xl text-(--fg-2) max-w-2xl leading-relaxed">
-              {service.excerpt.replace(/<[^>]*>/g, "")}
+              {service.excerpt?.replace(/<[^>]*>/g, "")}
             </p>
           )}
         </div>
 
         {/* Image / Cover */}
-        {service.featuredImage?.node?.sourceUrl && (
+        {service.featuredImage && (
           <div className="relative h-[400px] md:h-[500px] w-full mb-20 rounded-3xl overflow-hidden border border-[#2a2a2a] group">
             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
             <Image
-              src={service.featuredImage.node.sourceUrl}
+              src={service.featuredImage}
               alt={service.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -94,7 +94,7 @@ export default async function ServicePage({ params }: PageProps) {
         <div className="bg-(--bg-card) border border-(--border) rounded-3xl p-8 md:p-14 shadow-2xl mb-20">
           <div
             className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-strong:text-(--fg) prose-strong:font-semibold prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2) prose-code:text-(--accent) prose-code:bg-(--accent-subtle) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
-            dangerouslySetInnerHTML={{ __html: service.content }}
+            dangerouslySetInnerHTML={{ __html: service.content || "" }}
           />
         </div>
 

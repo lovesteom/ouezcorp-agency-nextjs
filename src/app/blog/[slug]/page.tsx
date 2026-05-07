@@ -28,8 +28,8 @@ export async function generateMetadata({
   if (!post) return {};
 
   return {
-    title: post.seo?.title || post.title,
-    description: post.seo?.metaDesc || post.excerpt,
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt || "",
   };
 }
 
@@ -57,18 +57,26 @@ export default async function BlogPostPage({ params }: PageProps) {
         </Link>
 
         {/* Catégories */}
-        {post.categories?.nodes?.length > 0 && (
-          <div className="flex gap-2 flex-wrap mb-6">
-            {post.categories.nodes.map((cat: any) => (
-              <span
-                key={cat.slug}
-                className="inline-block px-3 py-1 text-[10px] font-bold tracking-widest text-amber-400 uppercase bg-amber-400/10 rounded-full"
-              >
-                {cat.name}
-              </span>
-            ))}
-          </div>
-        )}
+        {post.categories &&
+          (() => {
+            try {
+              const cats: string[] = JSON.parse(post.categories);
+              return cats.length > 0 ? (
+                <div className="flex gap-2 flex-wrap mb-6">
+                  {cats.map((cat) => (
+                    <span
+                      key={cat}
+                      className="inline-block px-3 py-1 text-[10px] font-bold tracking-widest text-amber-400 uppercase bg-amber-400/10 rounded-full"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              ) : null;
+            } catch {
+              return null;
+            }
+          })()}
 
         {/* Titre */}
         <h1 className="text-4xl md:text-5xl font-bold text-(--fg) tracking-tight leading-tight mb-10">
@@ -78,22 +86,15 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Auteur + date */}
         <div className="flex items-center justify-between mb-12 pb-8 border-b border-(--border)">
           <div className="flex items-center gap-3">
-            {post.author?.node?.avatar?.url && (
-              <div className="relative w-9 h-9 rounded-full overflow-hidden border border-(--border-strong)">
-                <Image
-                  src={post.author.node.avatar.url}
-                  alt={post.author.node.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
             <span className="text-sm font-medium text-(--fg)">
-              {post.author?.node?.name || "OuezCorp Team"}
+              {post.author || "OuezCorp Team"}
             </span>
           </div>
-          <time dateTime={post.date} className="text-xs text-(--fg-3)">
-            {new Date(post.date).toLocaleDateString("fr-FR", {
+          <time
+            dateTime={post.publishedAt.toISOString()}
+            className="text-xs text-(--fg-3)"
+          >
+            {new Date(post.publishedAt).toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "long",
               year: "numeric",
@@ -102,10 +103,10 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Image à la une */}
-        {post.featuredImage?.node?.sourceUrl && (
+        {post.featuredImage && (
           <div className="relative h-[420px] w-full mb-14 rounded-2xl overflow-hidden border border-(--border)">
             <Image
-              src={post.featuredImage.node.sourceUrl}
+              src={post.featuredImage}
               alt={post.title}
               fill
               className="object-cover"
@@ -117,7 +118,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Contenu */}
         <div
           className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-strong:text-(--fg) prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2) prose-code:text-(--accent) prose-code:bg-(--accent-subtle) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: post.content || "" }}
         />
       </article>
     </div>

@@ -137,8 +137,8 @@ export default async function ServicesPage() {
               <p className="text-(--fg-2) text-lg leading-relaxed max-w-md mb-10">
                 Nous n&apos;essayons pas de tout faire. Nous excellons dans
                 l&apos;architecture Headless, l&apos;e-commerce haute
-                performance et le SEO technique — là où l&apos;expertise
-                fait vraiment la différence.
+                performance et le SEO technique — là où l&apos;expertise fait
+                vraiment la différence.
               </p>
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-(--border)">
                 {[
@@ -181,9 +181,16 @@ export default async function ServicesPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {items.map((service: any, index: number) => {
               const Icon = iconMap[index % iconMap.length];
-              const tags = isFallback
-                ? service.tags
-                : fallbackServices[index]?.tags || [];
+              let tags: string[] = [];
+              if (isFallback) {
+                tags = service.tags || [];
+              } else {
+                try {
+                  tags = service.tags ? JSON.parse(service.tags) : [];
+                } catch {
+                  tags = [];
+                }
+              }
               return (
                 <div
                   key={service.slug}
@@ -298,9 +305,8 @@ export default async function ServicesPage() {
                 Vous avez un projet en tête ?
               </h2>
               <p className="text-(--fg-2) text-sm md:text-base leading-relaxed">
-                Premier échange gratuit — 30 min pour analyser votre
-                situation et vous proposer une approche concrète, sans
-                engagement.
+                Premier échange gratuit — 30 min pour analyser votre situation
+                et vous proposer une approche concrète, sans engagement.
               </p>
             </div>
             <Link

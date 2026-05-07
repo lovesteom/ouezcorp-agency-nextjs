@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { ReactNode } from 'react';
+import Link from "next/link";
+import { ReactNode } from "react";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
@@ -9,27 +9,75 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="h-full px-3 py-4 overflow-y-auto">
           <div className="mb-6 px-2">
             <br />
-            <h2 className="text-2xl font-bold text-gray-800 tracking-tight">CMS Admin</h2>
+            <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
+              CMS Admin
+            </h2>
           </div>
           <ul className="space-y-2 font-medium">
             <li>
-              <Link href="/admin" className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors">
+              <Link
+                href="/admin"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
                 <span className="ms-3">Tableau de bord</span>
               </Link>
             </li>
             <li>
-              <Link href="/admin/pages" className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors">
-                <span className="flex-1 ms-3 whitespace-nowrap">Gestion des Pages</span>
+              <Link
+                href="/admin/posts"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Articles de blog
+                </span>
               </Link>
             </li>
             <li>
-              <Link href="/admin/content" className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors">
-                <span className="flex-1 ms-3 whitespace-nowrap">Contenu Global</span>
+              <Link
+                href="/admin/services"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">Services</span>
               </Link>
             </li>
             <li>
-              <Link href="/" className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors">
-                <span className="flex-1 ms-3 whitespace-nowrap">Retour au site</span>
+              <Link
+                href="/admin/realisations"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Réalisations
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/admin/pages"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Pages statiques
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/admin/content"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Contenu Global
+                </span>
+              </Link>
+            </li>
+            <li className="pt-2 border-t border-gray-200 mt-2">
+              <Link
+                href="/"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Retour au site
+                </span>
               </Link>
             </li>
           </ul>

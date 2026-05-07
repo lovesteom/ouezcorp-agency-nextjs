@@ -1,182 +1,101 @@
-﻿const API_URL =
-  process.env.WORDPRESS_API_URL || "http://localhost/lipstickandfins/graphql";
+﻿import prisma from "./prisma";
 
-async function fetchAPI(query: string, variables: any = {}) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-    headers["Authorization"] =
-      `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
-  }
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60 },
-  }).catch((err) => {
-    console.warn(
-      "API fetch failed, returning empty data. Check WORDPRESS_API_URL.",
-      err.message,
-    );
-    return null;
-  });
-
-  if (!res) return {};
-
-  if (!res.ok) {
-    console.error("Failed to fetch API", await res.text());
-    return {};
-  }
-
-  const json = await res.json();
-  if (json.errors) {
-    console.error("GraphQL Errors:", json.errors);
-    return {};
-  }
-  return json.data;
-}
-
-/* Posts */
+/* ─── Posts / Blog ──────────────────────────────────────────── */
 
 export async function getAllPosts() {
-  const data = await fetchAPI(`
-    query GetAllPosts {
-      posts {
-        nodes {
-          slug
-          title
-          excerpt
-          date
-          categories {
-            nodes { name slug }
-          }
-          featuredImage {
-            node { sourceUrl altText }
-          }
-        }
-      }
-    }
-  `);
-  return data?.posts?.nodes;
+  try {
+    return await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { publishedAt: "desc" },
+      select: {
+        slug: true,
+        title: true,
+        excerpt: true,
+        featuredImage: true,
+        categories: true,
+        author: true,
+        publishedAt: true,
+      },
+    });
+  } catch (error) {
+    console.error("getAllPosts error:", error);
+    return [];
+  }
 }
 
 export async function getPostBySlug(slug: string) {
-  const data = await fetchAPI(
-    `
-    query GetPostBySlug($id: ID!, $idType: PostIdType!) {
-      post(id: $id, idType: $idType) {
-        title
-        content
-        slug
-        date
-        excerpt
-        featuredImage {
-          node { sourceUrl altText }
-        }
-        author {
-          node {
-            name
-            avatar { url }
-          }
-        }
-        categories {
-          nodes { name slug }
-        }
-      }
-    }
-  `,
-    { id: slug, idType: "SLUG" },
-  );
-  return data?.post;
+  try {
+    return await prisma.post.findUnique({
+      where: { slug, published: true },
+    });
+  } catch (error) {
+    console.error("getPostBySlug error:", error);
+    return null;
+  }
 }
 
-/* Services */
+/* ─── Services ──────────────────────────────────────────────── */
 
 export async function getAllServices() {
-  const data = await fetchAPI(`
-    query GetAllServices {
-      services {
-        nodes {
-          slug
-          title
-          excerpt
-          featuredImage {
-            node { sourceUrl altText }
-          }
-        }
-      }
-    }
-  `);
-  return data?.services?.nodes;
+  try {
+    return await prisma.service.findMany({
+      where: { published: true },
+      orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+      select: {
+        slug: true,
+        title: true,
+        excerpt: true,
+        featuredImage: true,
+        tags: true,
+      },
+    });
+  } catch (error) {
+    console.error("getAllServices error:", error);
+    return [];
+  }
 }
 
 export async function getServiceBySlug(slug: string) {
-  const data = await fetchAPI(
-    `
-    query GetServiceBySlug($id: ID!, $idType: ServiceIdType!) {
-      service(id: $id, idType: $idType) {
-        title
-        content
-        slug
-        excerpt
-        featuredImage {
-          node { sourceUrl altText }
-        }
-        seo {
-          title
-          metaDesc
-        }
-      }
-    }
-  `,
-    { id: slug, idType: "SLUG" },
-  );
-  return data?.service;
+  try {
+    return await prisma.service.findUnique({
+      where: { slug, published: true },
+    });
+  } catch (error) {
+    console.error("getServiceBySlug error:", error);
+    return null;
+  }
 }
 
-/* Realisations */
+/* ─── Réalisations ──────────────────────────────────────────── */
 
 export async function getAllRealisations() {
-  const data = await fetchAPI(`
-    query GetAllRealisations {
-      realisations {
-        nodes {
-          slug
-          title
-          excerpt
-          featuredImage {
-            node { sourceUrl altText }
-          }
-        }
-      }
-    }
-  `);
-  return data?.realisations?.nodes;
+  try {
+    return await prisma.realisation.findMany({
+      where: { published: true },
+      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+      select: {
+        slug: true,
+        title: true,
+        excerpt: true,
+        featuredImage: true,
+        client: true,
+        stack: true,
+        tags: true,
+      },
+    });
+  } catch (error) {
+    console.error("getAllRealisations error:", error);
+    return [];
+  }
 }
 
 export async function getRealisationBySlug(slug: string) {
-  const data = await fetchAPI(
-    `
-    query GetRealisationBySlug($id: ID!, $idType: RealisationIdType!) {
-      realisation(id: $id, idType: $idType) {
-        title
-        content
-        slug
-        excerpt
-        featuredImage {
-          node { sourceUrl altText }
-        }
-        seo {
-          title
-          metaDesc
-        }
-      }
-    }
-  `,
-    { id: slug, idType: "SLUG" },
-  );
-  return data?.realisation;
+  try {
+    return await prisma.realisation.findUnique({
+      where: { slug, published: true },
+    });
+  } catch (error) {
+    console.error("getRealisationBySlug error:", error);
+    return null;
+  }
 }

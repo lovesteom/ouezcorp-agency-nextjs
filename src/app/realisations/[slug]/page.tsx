@@ -27,8 +27,8 @@ export async function generateMetadata({
   if (!realisation) return {};
 
   return {
-    title: realisation.seo?.title || realisation.title,
-    description: realisation.seo?.metaDesc || realisation.excerpt,
+    title: realisation.seoTitle || realisation.title,
+    description: realisation.seoDescription || realisation.excerpt || "",
   };
 }
 
@@ -65,15 +65,10 @@ export default async function RealisationPage({ params }: PageProps) {
         {/* Meta cards */}
         <div className="grid md:grid-cols-3 gap-4 mb-16">
           {[
-            {
-              label: "Client",
-              value: realisation.realisationsFields?.client || "Confidentiel",
-            },
+            { label: "Client", value: realisation.client || "Confidentiel" },
             {
               label: "Stack",
-              value:
-                realisation.realisationsFields?.stackTechnique ||
-                "Next.js & WordPress",
+              value: realisation.stack || "Next.js & PostgreSQL",
             },
             { label: "Résultat", value: "Optimisé & Performant", accent: true },
           ].map((item) => (
@@ -96,10 +91,10 @@ export default async function RealisationPage({ params }: PageProps) {
         </div>
 
         {/* Image principale */}
-        {realisation.featuredImage?.node?.sourceUrl && (
+        {realisation.featuredImage && (
           <div className="relative h-[500px] w-full mb-14 rounded-2xl overflow-hidden border border-(--border)">
             <Image
-              src={realisation.featuredImage.node.sourceUrl}
+              src={realisation.featuredImage}
               alt={realisation.title}
               fill
               className="object-cover"
@@ -111,34 +106,40 @@ export default async function RealisationPage({ params }: PageProps) {
         {/* Contenu */}
         <div
           className="prose prose-lg max-w-none mb-16 prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2)"
-          dangerouslySetInnerHTML={{ __html: realisation.content }}
+          dangerouslySetInnerHTML={{ __html: realisation.content || "" }}
         />
 
         {/* Galerie */}
-        {realisation.realisationsFields?.galerie?.nodes?.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-(--fg) tracking-tight mb-8">
-              Galerie du projet
-            </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {realisation.realisationsFields.galerie.nodes.map(
-                (image: any, index: number) => (
-                  <div
-                    key={index}
-                    className="relative h-64 rounded-2xl overflow-hidden border border-(--border)"
-                  >
-                    <Image
-                      src={image.sourceUrl}
-                      alt={image.altText || `Image ${index + 1}`}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-700"
-                    />
+        {realisation.gallery &&
+          (() => {
+            try {
+              const images: string[] = JSON.parse(realisation.gallery);
+              return images.length > 0 ? (
+                <div className="mb-16">
+                  <h2 className="text-2xl font-bold text-(--fg) tracking-tight mb-8">
+                    Galerie du projet
+                  </h2>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {images.map((src, index) => (
+                      <div
+                        key={index}
+                        className="relative h-64 rounded-2xl overflow-hidden border border-(--border)"
+                      >
+                        <Image
+                          src={src}
+                          alt={`Image ${index + 1}`}
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ),
-              )}
-            </div>
-          </div>
-        )}
+                </div>
+              ) : null;
+            } catch {
+              return null;
+            }
+          })()}
 
         {/* CTA bas */}
         <div className="p-8 bg-(--bg-card) border border-(--border) rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">

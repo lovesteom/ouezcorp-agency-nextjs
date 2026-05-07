@@ -57,7 +57,7 @@ export default async function RealisationsPage() {
           </div>
           {realisations.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-6">
-              {realisations.map((realisation: any) => (
+              {realisations.map((realisation) => (
                 <Card
                   key={realisation.slug}
                   title={realisation.title}
@@ -65,7 +65,7 @@ export default async function RealisationsPage() {
                     realisation.excerpt?.replace(/<[^>]*>/g, "") ||
                     "Projet réalisé avec passion."
                   }
-                  image={realisation.featuredImage?.node?.sourceUrl}
+                  image={realisation.featuredImage ?? undefined}
                   url={`/realisations/${realisation.slug}`}
                 />
               ))}

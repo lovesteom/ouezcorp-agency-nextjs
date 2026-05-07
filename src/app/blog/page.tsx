@@ -33,8 +33,18 @@ export default async function BlogPage() {
                 architectures web modernes.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Next.js","WordPress Headless","SEO Technique","Performance","TypeScript","Core Web Vitals"].map((topic) => (
-                  <span key={topic} className="px-3 py-1.5 text-[10px] font-semibold text-(--fg-2) bg-(--bg-card) border border-(--border) rounded-full">
+                {[
+                  "Next.js",
+                  "WordPress Headless",
+                  "SEO Technique",
+                  "Performance",
+                  "TypeScript",
+                  "Core Web Vitals",
+                ].map((topic) => (
+                  <span
+                    key={topic}
+                    className="px-3 py-1.5 text-[10px] font-semibold text-(--fg-2) bg-(--bg-card) border border-(--border) rounded-full"
+                  >
                     {topic}
                   </span>
                 ))}
@@ -49,22 +59,53 @@ export default async function BlogPage() {
         <div className="max-w-7xl mx-auto px-6">
           {posts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {posts.map((post: any) => (
-                <Card key={post.slug} title={post.title} description={post.excerpt?.replace(/<[^>]*>?/gm, "")} image={post.featuredImage?.node?.sourceUrl} url={`/blog/${post.slug}`} />
+              {posts.map((post) => (
+                <Card
+                  key={post.slug}
+                  title={post.title}
+                  description={post.excerpt?.replace(/<[^>]*>?/gm, "") ?? ""}
+                  image={post.featuredImage ?? undefined}
+                  url={`/blog/${post.slug}`}
+                />
               ))}
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-5">
               {[
-                { category: "Next.js", title: "Architecture Headless : pourquoi découpler WordPress ?", desc: "Les avantages concrets d'une architecture découplée pour la performance, le SEO et l'expérience développeur." },
-                { category: "SEO", title: "Core Web Vitals 2025 : les métriques qui comptent vraiment", desc: "LCP, INP, CLS — comment les optimiser concrètement dans un projet Next.js 15." },
-                { category: "E-commerce", title: "WooCommerce Headless vs Shopify : lequel choisir ?", desc: "Comparatif technique et business pour choisir la bonne plateforme selon votre projet." },
+                {
+                  category: "Next.js",
+                  title:
+                    "Architecture Headless : pourquoi découpler WordPress ?",
+                  desc: "Les avantages concrets d'une architecture découplée pour la performance, le SEO et l'expérience développeur.",
+                },
+                {
+                  category: "SEO",
+                  title:
+                    "Core Web Vitals 2025 : les métriques qui comptent vraiment",
+                  desc: "LCP, INP, CLS — comment les optimiser concrètement dans un projet Next.js 15.",
+                },
+                {
+                  category: "E-commerce",
+                  title: "WooCommerce Headless vs Shopify : lequel choisir ?",
+                  desc: "Comparatif technique et business pour choisir la bonne plateforme selon votre projet.",
+                },
               ].map((post) => (
-                <div key={post.title} className="group p-6 bg-(--bg-card) border border-(--border) rounded-2xl hover:border-(--accent-border) transition-all">
-                  <span className="inline-block px-2.5 py-1 mb-4 text-[10px] font-bold tracking-widest text-(--accent) uppercase bg-(--accent-subtle) rounded-full">{post.category}</span>
-                  <h3 className="text-(--fg) font-bold text-sm mb-2 leading-snug group-hover:text-(--accent) transition-colors">{post.title}</h3>
-                  <p className="text-(--fg-2) text-xs leading-relaxed">{post.desc}</p>
-                  <p className="mt-4 text-[10px] text-(--fg-3) font-semibold uppercase tracking-widest">Bientôt disponible</p>
+                <div
+                  key={post.title}
+                  className="group p-6 bg-(--bg-card) border border-(--border) rounded-2xl hover:border-(--accent-border) transition-all"
+                >
+                  <span className="inline-block px-2.5 py-1 mb-4 text-[10px] font-bold tracking-widest text-(--accent) uppercase bg-(--accent-subtle) rounded-full">
+                    {post.category}
+                  </span>
+                  <h3 className="text-(--fg) font-bold text-sm mb-2 leading-snug group-hover:text-(--accent) transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-(--fg-2) text-xs leading-relaxed">
+                    {post.desc}
+                  </p>
+                  <p className="mt-4 text-[10px] text-(--fg-3) font-semibold uppercase tracking-widest">
+                    Bientôt disponible
+                  </p>
                 </div>
               ))}
             </div>

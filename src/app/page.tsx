@@ -268,18 +268,25 @@ export default async function Home() {
       <ProjectsShowcase
         projects={
           realisations.length > 0
-            ? realisations
-                .slice(0, 5)
-                .map((r: any, i: number) => ({
-                  slug: r.slug,
-                  title: r.title,
-                  excerpt:
-                    r.excerpt?.replace(/<[^>]*>/g, "") ||
-                    "Projet realise sur mesure.",
-                  category: r.categories?.nodes?.[0]?.name || "Realisation",
-                  image: r.featuredImage?.node?.sourceUrl,
-                  accent: ["amber", "blue", "violet", "orange", "pink"][i % 5],
-                }))
+            ? realisations.slice(0, 5).map((r: any, i: number) => ({
+                slug: r.slug,
+                title: r.title,
+                excerpt:
+                  r.excerpt?.replace(/<[^>]*>/g, "") ||
+                  "Projet realise sur mesure.",
+                category: r.tags
+                  ? (() => {
+                      try {
+                        const t = JSON.parse(r.tags);
+                        return t[0] || "Realisation";
+                      } catch {
+                        return "Realisation";
+                      }
+                    })()
+                  : "Realisation",
+                image: r.featuredImage,
+                accent: ["amber", "blue", "violet", "orange", "pink"][i % 5],
+              }))
             : undefined
         }
       />
@@ -287,25 +294,29 @@ export default async function Home() {
       <BlogShowcase
         posts={
           posts.length > 0
-            ? posts
-                .slice(0, 5)
-                .map((p: any) => ({
-                  slug: p.slug,
-                  title: p.title,
-                  excerpt: p.excerpt?.replace(/<[^>]*>/g, "") || "",
-                  category:
-                    p.categories?.nodes?.[0]?.name ||
-                    p.tags?.nodes?.[0]?.name ||
-                    "Blog",
-                  image: p.featuredImage?.node?.sourceUrl,
-                  date: p.date
-                    ? new Date(p.date).toLocaleDateString("fr-FR", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : undefined,
-                }))
+            ? posts.slice(0, 5).map((p: any) => ({
+                slug: p.slug,
+                title: p.title,
+                excerpt: p.excerpt?.replace(/<[^>]*>/g, "") || "",
+                category: p.categories
+                  ? (() => {
+                      try {
+                        const c = JSON.parse(p.categories);
+                        return c[0] || "Blog";
+                      } catch {
+                        return "Blog";
+                      }
+                    })()
+                  : "Blog",
+                image: p.featuredImage,
+                date: p.publishedAt
+                  ? new Date(p.publishedAt).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : undefined,
+              }))
             : undefined
         }
       />
