@@ -1,7 +1,19 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { logoutAdmin } from "@/app/admin/login/actions";
+import { getAdminSession } from "@/lib/auth/admin";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const session = await getAdminSession();
+
+  if (!session) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex h-screen bg-gray-100 text-gray-900">
       {/* Sidebar */}
@@ -80,12 +92,24 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 </span>
               </Link>
             </li>
+            <li>
+              <form action={logoutAdmin}>
+                <button
+                  type="submit"
+                  className="w-full text-left flex items-center p-2 text-red-700 rounded-lg hover:bg-red-50 group transition-colors"
+                >
+                  <span className="flex-1 ms-3 whitespace-nowrap">
+                    Déconnexion
+                  </span>
+                </button>
+              </form>
+            </li>
           </ul>
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="flex-1 overflow-y-auto p-8 pt-[100px]">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 min-h-[calc(100vh-4rem)]">
           {children}
         </div>

@@ -6,10 +6,11 @@ import { updateRealisation } from "../../actions";
 export default async function EditRealisationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const realisation = await prisma.realisation.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
   if (!realisation) notFound();
 

@@ -1,7 +1,8 @@
-'use server';
+"use server";
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+import { requireAdminSession } from "@/lib/auth/guard";
 
 // Interface for creating/updating a site content
 export interface SaveContentInput {
@@ -17,17 +18,18 @@ export async function getSiteContents(group?: string) {
   try {
     const contents = await prisma.siteContent.findMany({
       where: group ? { group } : undefined,
-      orderBy: { key: 'asc' }
+      orderBy: { key: "asc" },
     });
     return contents;
   } catch (error) {
-    console.error('Failed to get site contents:', error);
+    console.error("Failed to get site contents:", error);
     return [];
   }
 }
 
 // Save or Update a site content item by key
 export async function saveSiteContent(data: SaveContentInput) {
+  await requireAdminSession();
   try {
     const content = await prisma.siteContent.upsert({
       where: { key: data.key },
@@ -35,47 +37,48 @@ export async function saveSiteContent(data: SaveContentInput) {
         value: data.value,
         type: data.type,
         ...(data.group && { group: data.group }),
-        ...(data.label && { label: data.label })
+        ...(data.label && { label: data.label }),
       },
       create: {
         key: data.key,
         value: data.value,
         type: data.type,
-        group: data.group || 'GLOBAL',
-        label: data.label || data.key
-      }
+        group: data.group || "GLOBAL",
+        label: data.label || data.key,
+      },
     });
 
-    revalidatePath('/'); // Revalidate main pages to show changes
-    revalidatePath('/admin/content');
+    revalidatePath("/"); // Revalidate main pages to show changes
+    revalidatePath("/admin/content");
     return { success: true, content };
   } catch (error) {
-    console.error('Failed to save site content:', error);
-    return { success: false, error: 'Failed to save site content' };
+    console.error("Failed to save site content:", error);
+    return { success: false, error: "Failed to save site content" };
   }
 }
 
 // Delete a site content item
 export async function deleteSiteContent(key: string) {
+  await requireAdminSession();
   try {
     await prisma.siteContent.delete({
-      where: { key }
+      where: { key },
     });
-    
-    revalidatePath('/');
-    revalidatePath('/admin/content');
+
+    revalidatePath("/");
+    revalidatePath("/admin/content");
     return { success: true };
   } catch (error) {
-    console.error('Failed to delete site content:', error);
-    return { success: false, error: 'Failed to delete site content' };
+    console.error("Failed to delete site content:", error);
+    return { success: false, error: "Failed to delete site content" };
   }
 }
 
 // Helper to quickly retrieve a specific content value
-export async function getContentValue(key: string, defaultValue = '') {
+export async function getContentValue(key: string, defaultValue = "") {
   try {
     const content = await prisma.siteContent.findUnique({
-      where: { key }
+      where: { key },
     });
     return content ? content.value : defaultValue;
   } catch (error) {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef, useState } from "react";
+import Image from "next/image";
 
 interface PostFormProps {
   initialData?: any;
@@ -14,6 +15,34 @@ export default function PostForm({
   const [state, formAction, isPending] = useActionState(actionFunction, {
     error: null,
   });
+  const [imageUrl, setImageUrl] = useState<string>(
+    initialData?.featuredImage || "",
+  );
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: fd,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur upload");
+      setImageUrl(data.url);
+    } catch (err: any) {
+      setUploadError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const initialCategories = initialData?.categories
     ? (() => {
@@ -108,14 +137,83 @@ export default function PostForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Image à la une (URL)
+            Image à la une
           </label>
+          {/* Champ caché envoyé avec le formulaire */}
+          <input type="hidden" name="featuredImage" value={imageUrl} />
+
+          {/* Prévisualisation */}
+          {imageUrl && (
+            <div className="relative mb-2 w-full h-40 rounded-md overflow-hidden border border-gray-200 bg-gray-50">
+              <Image
+                src={imageUrl}
+                alt="Aperçu"
+                fill
+                className="object-cover"
+                unoptimized={imageUrl.startsWith("http://localhost")}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setImageUrl("");
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                className="absolute top-2 right-2 bg-white/80 hover:bg-white text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Sélecteur de fichier */}
+          <div
+            className="flex items-center gap-2 border border-dashed border-gray-300 rounded-md px-4 py-3 cursor-pointer hover:bg-gray-50 transition"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0L8 8m4-4l4 4"
+              />
+            </svg>
+            <span className="text-sm text-gray-500">
+              {uploading
+                ? "Upload en cours…"
+                : "Choisir une image (JPG, PNG, WebP — max 5 Mo)"}
+            </span>
+          </div>
           <input
-            type="url"
-            name="featuredImage"
-            defaultValue={initialData?.featuredImage || ""}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+            className="hidden"
+            onChange={handleFileChange}
           />
+          {uploadError && (
+            <p className="text-red-500 text-xs mt-1">{uploadError}</p>
+          )}
+
+          {/* Fallback saisie manuelle URL */}
+          <details className="mt-2">
+            <summary className="text-xs text-gray-400 cursor-pointer select-none">
+              Ou coller une URL directement
+            </summary>
+            <input
+              type="text"
+              placeholder="https://… ou /images/…"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+            />
+          </details>
         </div>
 
         <div>

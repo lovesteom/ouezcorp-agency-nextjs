@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { setRealisationPublishedStatus } from "@/app/admin/realisations/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,7 @@ export default async function AdminRealisationsList() {
                     <span
                       className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${r.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
                     >
-                      {r.published ? "Publié" : "Masqué"}
+                      {r.published ? "Publié" : "Brouillon"}
                     </span>
                   </td>
                   <td className="p-4 text-right">
@@ -66,6 +67,20 @@ export default async function AdminRealisationsList() {
                     >
                       Voir
                     </Link>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await setRealisationPublishedStatus(r.id, !r.published);
+                      }}
+                      className="inline"
+                    >
+                      <button
+                        type="submit"
+                        className="text-amber-700 hover:underline mr-4"
+                      >
+                        {r.published ? "Mettre en brouillon" : "Publier"}
+                      </button>
+                    </form>
                     <Link
                       href={`/admin/realisations/${r.id}/edit`}
                       className="text-blue-600 hover:underline mr-4"

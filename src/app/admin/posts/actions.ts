@@ -3,8 +3,10 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { requireAdminSession } from "@/lib/auth/guard";
 
 export async function createPost(prevState: any, formData: FormData) {
+  await requireAdminSession();
   try {
     const slug = formData.get("slug") as string;
     const existing = await prisma.post.findUnique({ where: { slug } });
@@ -47,6 +49,7 @@ export async function createPost(prevState: any, formData: FormData) {
 }
 
 export async function updatePost(prevState: any, formData: FormData) {
+  await requireAdminSession();
   try {
     const id = formData.get("id") as string;
     const slug = formData.get("slug") as string;
@@ -93,7 +96,19 @@ export async function updatePost(prevState: any, formData: FormData) {
 }
 
 export async function deletePost(id: string) {
+  await requireAdminSession();
   await prisma.post.delete({ where: { id } });
+  revalidatePath("/admin/posts");
+  revalidatePath("/blog");
+}
+
+export async function setPostPublishedStatus(id: string, published: boolean) {
+  await requireAdminSession();
+  await prisma.post.update({
+    where: { id },
+    data: { published },
+  });
+
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
 }

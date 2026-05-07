@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "admin:bootstrap": "node scripts/generate-admin-2fa.mjs"
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",
@@ -14,13 +15,16 @@
     "@prisma/client": "^7.5.0",
     "@types/pg": "^8.18.0",
     "axios": "^1.13.5",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "graphql": "^16.13.0",
+    "jose": "^6.2.3",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "next-themes": "^0.4.6",
+    "otplib": "^13.4.0",
     "pg": "^8.20.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",

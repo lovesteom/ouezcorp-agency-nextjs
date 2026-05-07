@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import ShareButtons from "@/components/ShareButtons";
 
 interface PageProps {
   params: Promise<{
@@ -102,6 +103,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           </time>
         </div>
 
+        {/* Partage réseaux sociaux (haut) */}
+        <div className="mb-10">
+          <ShareButtons title={post.title} />
+        </div>
+
         {/* Image à la une */}
         {post.featuredImage && (
           <div className="relative h-[420px] w-full mb-14 rounded-2xl overflow-hidden border border-(--border)">
@@ -120,6 +126,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-(--fg) prose-headings:tracking-tight prose-a:text-(--accent) hover:prose-a:text-(--accent-hover) prose-strong:text-(--fg) prose-p:text-(--fg-2) prose-p:leading-relaxed prose-li:text-(--fg-2) prose-code:text-(--accent) prose-code:bg-(--accent-subtle) prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded"
           dangerouslySetInnerHTML={{ __html: post.content || "" }}
         />
+
+        {/* Partage réseaux sociaux (bas) */}
+        <div className="mt-14 pt-10 border-t border-(--border)">
+          <ShareButtons title={post.title} />
+        </div>
       </article>
     </div>
   );

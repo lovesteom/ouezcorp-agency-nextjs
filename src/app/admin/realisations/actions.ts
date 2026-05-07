@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { requireAdminSession } from "@/lib/auth/guard";
 
 function parseTags(raw: string | null): string | null {
   if (!raw?.trim()) return null;
@@ -24,6 +25,7 @@ function parseGallery(raw: string | null): string | null {
 }
 
 export async function createRealisation(prevState: any, formData: FormData) {
+  await requireAdminSession();
   try {
     const slug = formData.get("slug") as string;
     const existing = await prisma.realisation.findUnique({ where: { slug } });
@@ -57,6 +59,7 @@ export async function createRealisation(prevState: any, formData: FormData) {
 }
 
 export async function updateRealisation(prevState: any, formData: FormData) {
+  await requireAdminSession();
   try {
     const id = formData.get("id") as string;
     const slug = formData.get("slug") as string;
@@ -94,7 +97,22 @@ export async function updateRealisation(prevState: any, formData: FormData) {
 }
 
 export async function deleteRealisation(id: string) {
+  await requireAdminSession();
   await prisma.realisation.delete({ where: { id } });
+  revalidatePath("/admin/realisations");
+  revalidatePath("/realisations");
+}
+
+export async function setRealisationPublishedStatus(
+  id: string,
+  published: boolean,
+) {
+  await requireAdminSession();
+  await prisma.realisation.update({
+    where: { id },
+    data: { published },
+  });
+
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
 }

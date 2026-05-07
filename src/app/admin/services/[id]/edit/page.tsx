@@ -6,9 +6,10 @@ import { updateService } from "../../actions";
 export default async function EditServicePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const service = await prisma.service.findUnique({ where: { id: params.id } });
+  const { id } = await params;
+  const service = await prisma.service.findUnique({ where: { id } });
   if (!service) notFound();
 
   return (

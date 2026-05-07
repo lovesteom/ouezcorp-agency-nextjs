@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { format } from "date-fns";
+import { setPostPublishedStatus } from "@/app/admin/posts/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -71,6 +72,20 @@ export default async function AdminPostsList() {
                     >
                       Voir
                     </Link>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await setPostPublishedStatus(post.id, !post.published);
+                      }}
+                      className="inline"
+                    >
+                      <button
+                        type="submit"
+                        className="text-amber-700 hover:underline mr-4"
+                      >
+                        {post.published ? "Mettre en brouillon" : "Publier"}
+                      </button>
+                    </form>
                     <Link
                       href={`/admin/posts/${post.id}/edit`}
                       className="text-blue-600 hover:underline mr-4"

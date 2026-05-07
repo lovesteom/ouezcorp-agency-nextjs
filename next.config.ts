@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**", // Allow all images for now, restrict later
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
     ],
   },
 };

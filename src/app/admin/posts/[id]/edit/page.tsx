@@ -6,9 +6,10 @@ import { updatePost } from "../../actions";
 export default async function EditPostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const post = await prisma.post.findUnique({ where: { id: params.id } });
+  const { id } = await params;
+  const post = await prisma.post.findUnique({ where: { id } });
   if (!post) notFound();
 
   return (

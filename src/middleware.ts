@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/auth/session";
 
-export function middleware(request: NextRequest) {
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+export async function middleware(request: NextRequest) {
+  const nonce = btoa(crypto.randomUUID());
+  const isDev = process.env.NODE_ENV !== "production";
+  const scriptSrc = isDev
+    ? "'self' 'unsafe-inline' 'unsafe-eval'"
+    : `'self' 'nonce-${nonce}' 'strict-dynamic'`;
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
+    script-src ${scriptSrc};
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://your-wordpress-site.com;
     font-src 'self';
@@ -16,54 +21,55 @@ export function middleware(request: NextRequest) {
     block-all-mixed-content;
     upgrade-insecure-requests;
 `;
-
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set(
-    "Content-Security-Policy",
-    // Replace newline characters and multiple spaces with a single space
-    cspHeader.replace(/\s{2,}/g, " ").trim(),
-  );
+  const cspValue = cspHeader.replace(/\s{2,}/g, " ").trim();
 
   const url = request.nextUrl.clone();
   const hostname = request.headers.get("host") || "";
+  const pathname = url.pathname;
 
-  // Rewrite admin subdomain
-  if (hostname.startsWith("admin.")) {
-    // Implement Basic Auth for Admin Subdomain
-    const basicAuth = request.headers.get('authorization');
-    if (!basicAuth) {
-      return new NextResponse('Authentication required', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Secure Admin Area"',
-        },
-      });
+  // Préserve le rewrite admin.<domain> -> /admin
+  if (hostname.startsWith("admin.") && !pathname.startsWith("/admin")) {
+    url.pathname = `/admin${pathname === "/" ? "" : pathname}`;
+    const response = NextResponse.rewrite(url);
+    response.headers.set("Content-Security-Policy", cspValue);
+    response.headers.set("x-nonce", nonce);
+    return response;
+  }
+
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isAdminLoginRoute = pathname === "/admin/login";
+
+  if (isAdminRoute) {
+    const sessionToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    const session = sessionToken
+      ? await verifyAdminSession(sessionToken)
+      : null;
+
+    if (!session && !isAdminLoginRoute) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/admin/login";
+      loginUrl.searchParams.set("next", pathname);
+      const response = NextResponse.redirect(loginUrl);
+      response.headers.set("Content-Security-Policy", cspValue);
+      response.headers.set("x-nonce", nonce);
+      return response;
     }
 
-    const authValue = basicAuth.split(' ')[1];
-    const [user, pwd] = Buffer.from(authValue, 'base64').toString().split(':');
-
-    // Default admin credentials (change in production!)
-    if (user !== 'admin' || pwd !== 'ouezcorp2026') {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    // If the path doesn't already start with /admin, add it
-    if (!url.pathname.startsWith("/admin")) {
-      url.pathname = `/admin${url.pathname === "/" ? "" : url.pathname}`;
-      return NextResponse.rewrite(url, {
-        headers: requestHeaders,
-      });
+    if (session && isAdminLoginRoute) {
+      const adminUrl = request.nextUrl.clone();
+      adminUrl.pathname = "/admin";
+      adminUrl.search = "";
+      const response = NextResponse.redirect(adminUrl);
+      response.headers.set("Content-Security-Policy", cspValue);
+      response.headers.set("x-nonce", nonce);
+      return response;
     }
   }
 
-  return NextResponse.next({
-    headers: requestHeaders,
-    request: {
-      headers: requestHeaders,
-    },
-  });
+  const response = NextResponse.next();
+  response.headers.set("Content-Security-Policy", cspValue);
+  response.headers.set("x-nonce", nonce);
+  return response;
 }
 
 export const config = {
