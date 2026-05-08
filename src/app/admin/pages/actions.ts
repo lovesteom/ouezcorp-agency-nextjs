@@ -51,10 +51,9 @@ export async function createPage(prevState: any, formData: FormData) {
 
 export async function updatePage(prevState: any, formData: FormData) {
   await requireAdminSession();
+  const id = formData.get("id") as string;
+  const slug = formData.get("slug") as string;
   try {
-    const id = formData.get("id") as string;
-    const slug = formData.get("slug") as string;
-
     // Check if slug conflicts with another page
     const existing = await prisma.page.findUnique({ where: { slug } });
     if (existing && existing.id !== id) {

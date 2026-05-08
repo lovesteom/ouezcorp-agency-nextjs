@@ -51,10 +51,9 @@ export async function createPost(prevState: any, formData: FormData) {
 
 export async function updatePost(prevState: any, formData: FormData) {
   await requireAdminSession();
+  const id = formData.get("id") as string;
+  const slug = formData.get("slug") as string;
   try {
-    const id = formData.get("id") as string;
-    const slug = formData.get("slug") as string;
-
     const existing = await prisma.post.findUnique({ where: { slug } });
     if (existing && existing.id !== id)
       return { error: "Un article avec ce slug existe déjà." };
