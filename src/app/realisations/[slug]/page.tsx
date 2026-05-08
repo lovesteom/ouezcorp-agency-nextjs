@@ -26,9 +26,28 @@ export async function generateMetadata({
   const realisation = await getRealisationBySlug(params.slug);
   if (!realisation) return {};
 
+  const title = realisation.seoTitle || realisation.title;
+  const description = realisation.seoDescription || realisation.excerpt || "";
+  const image = realisation.featuredImage || "/images/LogoOuez-corp.webp";
+  const url = `https://ouezcorp.com/realisations/${params.slug}`;
+
   return {
-    title: realisation.seoTitle || realisation.title,
-    description: realisation.seoDescription || realisation.excerpt || "",
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

@@ -31,7 +31,7 @@ export async function createPost(prevState: any, formData: FormData) {
         featuredImage: (formData.get("featuredImage") as string) || null,
         author: (formData.get("author") as string) || "OuezCorp Team",
         categories: categoriesJson,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         publishedAt: formData.get("publishedAt")
           ? new Date(formData.get("publishedAt") as string)
           : new Date(),
@@ -45,6 +45,7 @@ export async function createPost(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
+  revalidatePath(`/blog/${formData.get("slug")}`, "page");
   redirect("/admin/posts");
 }
 
@@ -78,7 +79,7 @@ export async function updatePost(prevState: any, formData: FormData) {
         featuredImage: (formData.get("featuredImage") as string) || null,
         author: (formData.get("author") as string) || "OuezCorp Team",
         categories: categoriesJson,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         publishedAt: formData.get("publishedAt")
           ? new Date(formData.get("publishedAt") as string)
           : undefined,
@@ -92,23 +93,30 @@ export async function updatePost(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`, "page");
   redirect("/admin/posts");
 }
 
 export async function deletePost(id: string) {
   await requireAdminSession();
+  const post = await prisma.post.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
   await prisma.post.delete({ where: { id } });
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
+  if (post) revalidatePath(`/blog/${post.slug}`, "page");
 }
 
-export async function setPostPublishedStatus(id: string, published: boolean) {
+export async function setPostStatus(id: string, status: string) {
   await requireAdminSession();
-  await prisma.post.update({
+  const post = await prisma.post.update({
     where: { id },
-    data: { published },
+    data: { status },
+    select: { slug: true },
   });
-
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
+  revalidatePath(`/blog/${post.slug}`, "page");
 }

@@ -44,7 +44,7 @@ export async function createRealisation(prevState: any, formData: FormData) {
         gallery: parseGallery(formData.get("gallery") as string),
         tags: parseTags(formData.get("tags") as string),
         order: parseInt(formData.get("order") as string) || 0,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         seoTitle: (formData.get("seoTitle") as string) || null,
         seoDescription: (formData.get("seoDescription") as string) || null,
       },
@@ -55,6 +55,7 @@ export async function createRealisation(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  revalidatePath(`/realisations/${formData.get("slug")}`, "page");
   redirect("/admin/realisations");
 }
 
@@ -82,7 +83,7 @@ export async function updateRealisation(prevState: any, formData: FormData) {
         gallery: parseGallery(formData.get("gallery") as string),
         tags: parseTags(formData.get("tags") as string),
         order: parseInt(formData.get("order") as string) || 0,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         seoTitle: (formData.get("seoTitle") as string) || null,
         seoDescription: (formData.get("seoDescription") as string) || null,
       },
@@ -93,26 +94,30 @@ export async function updateRealisation(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  revalidatePath(`/realisations/${slug}`, "page");
   redirect("/admin/realisations");
 }
 
 export async function deleteRealisation(id: string) {
   await requireAdminSession();
+  const r = await prisma.realisation.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
   await prisma.realisation.delete({ where: { id } });
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  if (r) revalidatePath(`/realisations/${r.slug}`, "page");
 }
 
-export async function setRealisationPublishedStatus(
-  id: string,
-  published: boolean,
-) {
+export async function setRealisationStatus(id: string, status: string) {
   await requireAdminSession();
-  await prisma.realisation.update({
+  const r = await prisma.realisation.update({
     where: { id },
-    data: { published },
+    data: { status },
+    select: { slug: true },
   });
-
   revalidatePath("/admin/realisations");
   revalidatePath("/realisations");
+  revalidatePath(`/realisations/${r.slug}`, "page");
 }

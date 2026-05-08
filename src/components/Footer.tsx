@@ -54,13 +54,14 @@ export default function Footer() {
               href="/"
               className="flex items-center gap-2.5 mb-5 group w-fit"
             >
-              <div
-                className="w-7 h-7 rounded-lg bg-(--accent) flex items-center justify-center
-                group-hover:scale-105 transition-transform duration-200"
-              >
-                <span className="w-2 h-2 rounded-full bg-black" />
-              </div>
-              <span className="text-base font-bold text-(--fg)">OuezCorp</span>
+              
+                 <img
+              src="/logo.png"
+              alt="OuezCorp Logo"
+              className="w-auto h-12 hidden sm:block"
+            />  
+              
+              
             </Link>
             <p className="text-(--fg-2) text-sm leading-relaxed max-w-xs mb-6">
               Agence digitale spécialisée en architecture Headless WordPress +

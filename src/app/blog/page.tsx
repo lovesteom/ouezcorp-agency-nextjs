@@ -3,8 +3,17 @@ import Card from "@/components/Card";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog — OuezCorp",
-  description: "Articles et actualités sur le développement web et le SEO.",
+  title: "Blog",
+  description:
+    "Articles, guides et actualités sur le développement web, le SEO technique et le digital en Afrique de l'Ouest.",
+  alternates: { canonical: "https://ouezcorp.com/blog" },
+  openGraph: {
+    title: "Blog | OuezCorp",
+    description:
+      "Articles, guides et actualités sur le développement web, le SEO technique et le digital en Afrique de l'Ouest.",
+    url: "https://ouezcorp.com/blog",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

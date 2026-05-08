@@ -45,6 +45,7 @@ export async function createPage(prevState: any, formData: FormData) {
   }
 
   revalidatePath("/admin/pages");
+  revalidatePath(`/${formData.get("slug")}`, "page");
   redirect("/admin/pages");
 }
 
@@ -79,11 +80,17 @@ export async function updatePage(prevState: any, formData: FormData) {
   }
 
   revalidatePath("/admin/pages");
+  revalidatePath(`/${slug}`, "page");
   redirect("/admin/pages");
 }
 
 export async function deletePage(id: string) {
   await requireAdminSession();
+  const page = await prisma.page.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
   await prisma.page.delete({ where: { id } });
   revalidatePath("/admin/pages");
+  if (page) revalidatePath(`/${page.slug}`, "page");
 }

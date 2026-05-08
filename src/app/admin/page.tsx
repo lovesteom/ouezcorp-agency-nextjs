@@ -4,13 +4,19 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [pagesCount, postsCount, servicesCount, realisationsCount] =
-    await Promise.all([
-      prisma.page.count(),
-      prisma.post.count(),
-      prisma.service.count(),
-      prisma.realisation.count(),
-    ]);
+  const [
+    pagesCount,
+    postsCount,
+    servicesCount,
+    realisationsCount,
+    newLeadsCount,
+  ] = await Promise.all([
+    prisma.page.count(),
+    prisma.post.count({ where: { status: "PUBLISHED" } }),
+    prisma.service.count({ where: { status: "PUBLISHED" } }),
+    prisma.realisation.count({ where: { status: "PUBLISHED" } }),
+    prisma.contactLead.count({ where: { status: "NEW" } }),
+  ]);
 
   const stats = [
     { label: "Pages", count: pagesCount, href: "/admin/pages", color: "blue" },
@@ -32,6 +38,12 @@ export default async function AdminDashboard() {
       href: "/admin/realisations",
       color: "emerald",
     },
+    {
+      label: "Leads",
+      count: newLeadsCount,
+      href: "/admin/leads",
+      color: "rose",
+    },
   ] as const;
 
   const colorMap = {
@@ -42,6 +54,7 @@ export default async function AdminDashboard() {
       "bg-amber-50 border-amber-100 text-amber-800 text-amber-600 text-amber-700",
     emerald:
       "bg-emerald-50 border-emerald-100 text-emerald-800 text-emerald-600 text-emerald-700",
+    rose: "bg-rose-50 border-rose-100 text-rose-800 text-rose-600 text-rose-700",
   };
 
   return (

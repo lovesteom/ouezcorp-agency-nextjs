@@ -55,9 +55,19 @@ export default async function AdminServicesList() {
                   </td>
                   <td className="p-4">
                     <span
-                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${service.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${
+                        service.status === "PUBLISHED"
+                          ? "bg-green-100 text-green-700"
+                          : service.status === "ARCHIVED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-500"
+                      }`}
                     >
-                      {service.published ? "Publié" : "Masqué"}
+                      {service.status === "PUBLISHED"
+                        ? "Publié"
+                        : service.status === "ARCHIVED"
+                          ? "Archivé"
+                          : "Masqué"}
                     </span>
                   </td>
                   <td className="p-4 text-right">

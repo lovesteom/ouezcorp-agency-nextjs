@@ -1,7 +1,9 @@
 ﻿import React from "react";
+import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import ProjectsShowcase from "@/components/ProjectsShowcase";
 import BlogShowcase from "@/components/BlogShowcase";
+import JsonLd from "@/components/JsonLd";
 import { getAllServices, getAllRealisations, getAllPosts } from "@/lib/api";
 import Link from "next/link";
 import {
@@ -19,6 +21,17 @@ import {
   Clock,
   TrendingUp,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "OuezCorp — Agence IT & Développement Web · Bénin",
+  },
+  description:
+    "Agence digitale spécialisée en architecture Headless WordPress + Next.js, cybersécurité, cloud et SEO technique. Basés à Cotonou, on intervient partout en Afrique de l'Ouest.",
+  alternates: {
+    canonical: "https://ouezcorp.com",
+  },
+};
 
 export const revalidate = 60;
 
@@ -103,6 +116,28 @@ export default async function Home() {
 
   return (
     <div className="bg-(--bg)">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "OuezCorp",
+          url: "https://ouezcorp.com",
+          logo: "https://ouezcorp.com/logo.png",
+          description:
+            "Agence digitale spécialisée en architecture Headless WordPress + Next.js, cybersécurité, cloud et SEO technique.",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Cotonou",
+            addressCountry: "BJ",
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            url: "https://ouezcorp.com/contact",
+          },
+          sameAs: [],
+        }}
+      />
       <Hero />
 
       {/* Trust signals */}

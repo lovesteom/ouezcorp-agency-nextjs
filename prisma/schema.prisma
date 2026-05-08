@@ -32,6 +32,8 @@ model Page {
   seoKeywords    String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([slug])
 }
 
 model SiteContent {
@@ -55,12 +57,15 @@ model Post {
   featuredImage  String?
   author         String?  @default("OuezCorp Team")
   categories     String?  @db.Text // JSON: ["Next.js","SEO"]
-  published      Boolean  @default(true)
+  status         String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
   publishedAt    DateTime @default(now())
   seoTitle       String?
   seoDescription String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([slug])
 }
 
 // Services proposés
@@ -73,11 +78,14 @@ model Service {
   featuredImage  String?
   tags           String?  @db.Text // JSON: ["Next.js","TypeScript"]
   order          Int      @default(0)
-  published      Boolean  @default(true)
+  status         String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
   seoTitle       String?
   seoDescription String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([status, order])
+  @@index([slug])
 }
 
 // Réalisations / portfolio
@@ -94,9 +102,28 @@ model Realisation {
   gallery        String?  @db.Text // JSON: ["url1","url2"]
   tags           String?  @db.Text
   order          Int      @default(0)
-  published      Boolean  @default(true)
+  status         String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
   seoTitle       String?
   seoDescription String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([status, order])
+  @@index([slug])
+}
+
+// Leads formulaire de contact
+model ContactLead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  budget    String?
+  message   String   @db.Text
+  status    String   @default("NEW") // NEW, READ, ARCHIVED
+  ipAddress String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
 }

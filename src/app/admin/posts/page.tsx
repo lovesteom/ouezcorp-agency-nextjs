@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { format } from "date-fns";
-import { setPostPublishedStatus } from "@/app/admin/posts/actions";
+import { setPostStatus } from "@/app/admin/posts/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -56,9 +56,19 @@ export default async function AdminPostsList() {
                   </td>
                   <td className="p-4">
                     <span
-                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${post.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${
+                        post.status === "PUBLISHED"
+                          ? "bg-green-100 text-green-700"
+                          : post.status === "ARCHIVED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-500"
+                      }`}
                     >
-                      {post.published ? "Publié" : "Brouillon"}
+                      {post.status === "PUBLISHED"
+                        ? "Publié"
+                        : post.status === "ARCHIVED"
+                          ? "Archivé"
+                          : "Brouillon"}
                     </span>
                   </td>
                   <td className="p-4 text-gray-500 text-sm">
@@ -75,7 +85,10 @@ export default async function AdminPostsList() {
                     <form
                       action={async () => {
                         "use server";
-                        await setPostPublishedStatus(post.id, !post.published);
+                        await setPostStatus(
+                          post.id,
+                          post.status === "PUBLISHED" ? "DRAFT" : "PUBLISHED",
+                        );
                       }}
                       className="inline"
                     >
@@ -83,7 +96,9 @@ export default async function AdminPostsList() {
                         type="submit"
                         className="text-amber-700 hover:underline mr-4"
                       >
-                        {post.published ? "Mettre en brouillon" : "Publier"}
+                        {post.status === "PUBLISHED"
+                          ? "Mettre en brouillon"
+                          : "Publier"}
                       </button>
                     </form>
                     <Link

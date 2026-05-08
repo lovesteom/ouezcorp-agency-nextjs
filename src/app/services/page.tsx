@@ -16,9 +16,17 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Nos Services — OuezCorp",
+  title: "Nos Services",
   description:
     "Développement Headless Next.js & WordPress, e-commerce sur mesure, SEO technique, UI/UX Design. Livraison en 4 à 8 semaines, score Lighthouse > 95.",
+  alternates: { canonical: "https://ouezcorp.com/services" },
+  openGraph: {
+    title: "Nos Services | OuezCorp",
+    description:
+      "Développement Headless Next.js & WordPress, e-commerce sur mesure, SEO technique, UI/UX Design.",
+    url: "https://ouezcorp.com/services",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

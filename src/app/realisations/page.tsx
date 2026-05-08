@@ -3,8 +3,17 @@ import Card from "@/components/Card";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Nos Réalisations — OuezCorp",
-  description: "Découvrez nos projets web et applications sur-mesure.",
+  title: "Nos Réalisations",
+  description:
+    "Portfolio de projets web et applications sur-mesure réalisés par OuezCorp : sites Next.js, e-commerce, dashboards et plus.",
+  alternates: { canonical: "https://ouezcorp.com/realisations" },
+  openGraph: {
+    title: "Nos Réalisations | OuezCorp",
+    description:
+      "Portfolio de projets web et applications sur-mesure réalisés par OuezCorp.",
+    url: "https://ouezcorp.com/realisations",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

@@ -30,7 +30,7 @@ export async function createService(prevState: any, formData: FormData) {
         featuredImage: (formData.get("featuredImage") as string) || null,
         tags: parseTags(formData.get("tags") as string),
         order: parseInt(formData.get("order") as string) || 0,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         seoTitle: (formData.get("seoTitle") as string) || null,
         seoDescription: (formData.get("seoDescription") as string) || null,
       },
@@ -41,6 +41,7 @@ export async function createService(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/services");
   revalidatePath("/services");
+  revalidatePath(`/services/${formData.get("slug")}`, "page");
   redirect("/admin/services");
 }
 
@@ -64,7 +65,7 @@ export async function updateService(prevState: any, formData: FormData) {
         featuredImage: (formData.get("featuredImage") as string) || null,
         tags: parseTags(formData.get("tags") as string),
         order: parseInt(formData.get("order") as string) || 0,
-        published: formData.get("published") === "on",
+        status: (formData.get("status") as string) || "PUBLISHED",
         seoTitle: (formData.get("seoTitle") as string) || null,
         seoDescription: (formData.get("seoDescription") as string) || null,
       },
@@ -75,12 +76,18 @@ export async function updateService(prevState: any, formData: FormData) {
   }
   revalidatePath("/admin/services");
   revalidatePath("/services");
+  revalidatePath(`/services/${slug}`, "page");
   redirect("/admin/services");
 }
 
 export async function deleteService(id: string) {
   await requireAdminSession();
+  const service = await prisma.service.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
   await prisma.service.delete({ where: { id } });
   revalidatePath("/admin/services");
   revalidatePath("/services");
+  if (service) revalidatePath(`/services/${service.slug}`, "page");
 }

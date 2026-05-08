@@ -82,6 +82,16 @@ export default async function AdminLayout({
                 </span>
               </Link>
             </li>
+            <li>
+              <Link
+                href="/admin/leads"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group transition-colors"
+              >
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Leads & Contacts
+                </span>
+              </Link>
+            </li>
             <li className="pt-2 border-t border-gray-200 mt-2">
               <Link
                 href="/"

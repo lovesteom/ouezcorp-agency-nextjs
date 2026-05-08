@@ -2,10 +2,10 @@
 
 /* ─── Posts / Blog ──────────────────────────────────────────── */
 
-export async function getAllPosts() {
+export async function getAllPosts(options?: { limit?: number }) {
   try {
     return await prisma.post.findMany({
-      where: { published: true },
+      where: { status: "PUBLISHED" },
       orderBy: { publishedAt: "desc" },
       select: {
         slug: true,
@@ -16,6 +16,7 @@ export async function getAllPosts() {
         author: true,
         publishedAt: true,
       },
+      ...(options?.limit ? { take: options.limit } : {}),
     });
   } catch (error) {
     console.error("getAllPosts error:", error);
@@ -25,8 +26,8 @@ export async function getAllPosts() {
 
 export async function getPostBySlug(slug: string) {
   try {
-    return await prisma.post.findUnique({
-      where: { slug, published: true },
+    return await prisma.post.findFirst({
+      where: { slug, status: "PUBLISHED" },
     });
   } catch (error) {
     console.error("getPostBySlug error:", error);
@@ -36,10 +37,10 @@ export async function getPostBySlug(slug: string) {
 
 /* ─── Services ──────────────────────────────────────────────── */
 
-export async function getAllServices() {
+export async function getAllServices(options?: { limit?: number }) {
   try {
     return await prisma.service.findMany({
-      where: { published: true },
+      where: { status: "PUBLISHED" },
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
       select: {
         slug: true,
@@ -48,6 +49,7 @@ export async function getAllServices() {
         featuredImage: true,
         tags: true,
       },
+      ...(options?.limit ? { take: options.limit } : {}),
     });
   } catch (error) {
     console.error("getAllServices error:", error);
@@ -57,8 +59,8 @@ export async function getAllServices() {
 
 export async function getServiceBySlug(slug: string) {
   try {
-    return await prisma.service.findUnique({
-      where: { slug, published: true },
+    return await prisma.service.findFirst({
+      where: { slug, status: "PUBLISHED" },
     });
   } catch (error) {
     console.error("getServiceBySlug error:", error);
@@ -68,10 +70,10 @@ export async function getServiceBySlug(slug: string) {
 
 /* ─── Réalisations ──────────────────────────────────────────── */
 
-export async function getAllRealisations() {
+export async function getAllRealisations(options?: { limit?: number }) {
   try {
     return await prisma.realisation.findMany({
-      where: { published: true },
+      where: { status: "PUBLISHED" },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
       select: {
         slug: true,
@@ -82,6 +84,7 @@ export async function getAllRealisations() {
         stack: true,
         tags: true,
       },
+      ...(options?.limit ? { take: options.limit } : {}),
     });
   } catch (error) {
     console.error("getAllRealisations error:", error);
@@ -91,8 +94,8 @@ export async function getAllRealisations() {
 
 export async function getRealisationBySlug(slug: string) {
   try {
-    return await prisma.realisation.findUnique({
-      where: { slug, published: true },
+    return await prisma.realisation.findFirst({
+      where: { slug, status: "PUBLISHED" },
     });
   } catch (error) {
     console.error("getRealisationBySlug error:", error);

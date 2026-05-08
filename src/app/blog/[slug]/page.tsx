@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
+import JsonLd from "@/components/JsonLd";
 
 interface PageProps {
   params: Promise<{
@@ -28,9 +29,29 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
+  const title = post.seoTitle || post.title;
+  const description = post.seoDescription || post.excerpt || "";
+  const image = post.featuredImage || "/images/LogoOuez-corp.webp";
+  const url = `https://ouezcorp.com/blog/${slug}`;
+
   return {
-    title: post.seoTitle || post.title,
-    description: post.seoDescription || post.excerpt || "",
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      publishedTime: post.publishedAt?.toISOString(),
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 
@@ -44,6 +65,36 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <div className="bg-(--bg) min-h-screen pt-20">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          description: post.excerpt || "",
+          image:
+            post.featuredImage ||
+            "https://ouezcorp.com/images/LogoOuez-corp.webp",
+          author: {
+            "@type": "Organization",
+            name: post.author || "OuezCorp",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "OuezCorp",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://ouezcorp.com/logo.png",
+            },
+          },
+          datePublished: post.publishedAt?.toISOString(),
+          dateModified:
+            post.updatedAt?.toISOString() ?? post.publishedAt?.toISOString(),
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://ouezcorp.com/blog/${post.slug}`,
+          },
+        }}
+      />
       <article className="max-w-3xl mx-auto px-6 py-24">
         {/* Retour */}
         <Link

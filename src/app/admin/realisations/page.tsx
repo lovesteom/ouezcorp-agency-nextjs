@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { setRealisationPublishedStatus } from "@/app/admin/realisations/actions";
+import { setRealisationStatus } from "@/app/admin/realisations/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -54,9 +54,19 @@ export default async function AdminRealisationsList() {
                   </td>
                   <td className="p-4">
                     <span
-                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${r.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                      className={`inline-block px-2 py-1 text-xs rounded-full font-semibold ${
+                        r.status === "PUBLISHED"
+                          ? "bg-green-100 text-green-700"
+                          : r.status === "ARCHIVED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-500"
+                      }`}
                     >
-                      {r.published ? "Publié" : "Brouillon"}
+                      {r.status === "PUBLISHED"
+                        ? "Publié"
+                        : r.status === "ARCHIVED"
+                          ? "Archivé"
+                          : "Brouillon"}
                     </span>
                   </td>
                   <td className="p-4 text-right">
@@ -70,7 +80,10 @@ export default async function AdminRealisationsList() {
                     <form
                       action={async () => {
                         "use server";
-                        await setRealisationPublishedStatus(r.id, !r.published);
+                        await setRealisationStatus(
+                          r.id,
+                          r.status === "PUBLISHED" ? "DRAFT" : "PUBLISHED",
+                        );
                       }}
                       className="inline"
                     >
@@ -78,7 +91,9 @@ export default async function AdminRealisationsList() {
                         type="submit"
                         className="text-amber-700 hover:underline mr-4"
                       >
-                        {r.published ? "Mettre en brouillon" : "Publier"}
+                        {r.status === "PUBLISHED"
+                          ? "Mettre en brouillon"
+                          : "Publier"}
                       </button>
                     </form>
                     <Link

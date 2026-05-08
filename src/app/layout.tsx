@@ -79,10 +79,53 @@ const notoSans = localFont({
   display: "swap",
 });
 
+const SITE_URL = "https://ouezcorp.com";
+const SITE_NAME = "OuezCorp";
+const SITE_DESCRIPTION =
+  "Agence digitale spécialisée en architecture Headless WordPress + Next.js, cybersécurité, cloud et SEO technique. Basés à Cotonou, on intervient partout en Afrique de l'Ouest.";
+
 export const metadata: Metadata = {
-  title: "OuezCorp — Agence IT & Développement Web · Bénin",
-  description:
-    "Agence digitale spécialisée en architecture Headless WordPress + Next.js, cybersécurité, cloud et SEO technique. Basés à Cotonou, on intervient partout en Afrique de l'Ouest.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Agence IT & Développement Web · Bénin`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  icons: {
+    icon: "/Ouez-corp-fav.jpg",
+    shortcut: "/Ouez-corp-fav.jpg",
+    apple: "/Ouez-corp-fav.jpg",
+  },
+  openGraph: {
+    title: `${SITE_NAME} — Agence IT & Développement Web · Bénin`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: "/images/LogoOuez-corp.webp",
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Agence IT & Développement Web`,
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — Agence IT & Développement Web · Bénin`,
+    description: SITE_DESCRIPTION,
+    images: ["/images/LogoOuez-corp.webp"],
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 };
 
 export default function RootLayout({

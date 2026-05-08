@@ -6,14 +6,36 @@ import { ArrowUpRight, Mail, Clock, MessageSquare } from "lucide-react";
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    const fd = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fd.get("name"),
+          email: fd.get("email"),
+          subject: fd.get("subject"),
+          budget: fd.get("budget"),
+          message: fd.get("message"),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Une erreur s'est produite.");
+        return;
+      }
       setSuccess(true);
-    }, 1500);
+    } catch {
+      setError("Erreur réseau. Vérifiez votre connexion et réessayez.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -117,6 +139,7 @@ export default function ContactPage() {
                     <input
                       type="text"
                       id="name"
+                      name="name"
                       required
                       className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) text-sm"
                       placeholder="John Doe"
@@ -132,6 +155,7 @@ export default function ContactPage() {
                     <input
                       type="email"
                       id="email"
+                      name="email"
                       required
                       className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) text-sm"
                       placeholder="john@company.com"
@@ -148,6 +172,7 @@ export default function ContactPage() {
                   </label>
                   <select
                     id="subject"
+                    name="subject"
                     className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) text-sm"
                   >
                     <option>Site Vitrine Headless</option>
@@ -167,6 +192,7 @@ export default function ContactPage() {
                   </label>
                   <select
                     id="budget"
+                    name="budget"
                     className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) text-sm"
                   >
                     <option>Moins de 5 000 €</option>
@@ -186,6 +212,7 @@ export default function ContactPage() {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     required
                     rows={5}
                     className="w-full px-4 py-3 bg-(--bg) border border-(--border) rounded-xl focus:ring-1 focus:ring-(--accent-border) focus:border-(--accent-border) outline-none transition-all text-(--fg) placeholder:text-(--fg-3) resize-none text-sm"
@@ -193,6 +220,9 @@ export default function ContactPage() {
                   ></textarea>
                 </div>
 
+                {error && (
+                  <p className="text-red-500 text-sm text-center">{error}</p>
+                )}
                 <button
                   type="submit"
                   disabled={loading}
