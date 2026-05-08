@@ -104,7 +104,6 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-2 shrink-0">
-            <ThemeToggle />
             <Link
               href="/contact"
               className="btn btn-primary text-center py-3 text-sm text-white"
@@ -114,7 +113,6 @@ export default function Header() {
           </div>
 
           <div className="md:hidden flex items-center gap-2">
-            <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Menu"
