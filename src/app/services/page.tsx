@@ -1,18 +1,13 @@
-﻿import { getAllServices } from "@/lib/api";
+import { getAllServices } from "@/lib/api";
+import { fallbackServices } from "@/lib/services-data";
 import Link from "next/link";
 import { Metadata } from "next";
 import {
-  Code2,
-  ShoppingCart,
-  Search,
-  Globe,
-  Palette,
-  Zap,
-  ArrowUpRight,
   Timer,
   BarChart3,
   Shield,
   Layers,
+  ArrowUpRight,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -31,45 +26,6 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-const iconMap = [Code2, ShoppingCart, Search, Globe, Palette, Zap];
-
-const fallbackServices = [
-  {
-    slug: "headless",
-    title: "Développement Headless",
-    excerpt:
-      "Architecture découplée Next.js 15 (App Router) + WordPress via WPGraphQL. Server Components, ISR, Edge Rendering. Chargement < 1 s, score Lighthouse > 95 garanti.",
-    tags: ["Next.js 15", "WordPress", "WPGraphQL", "TypeScript"],
-  },
-  {
-    slug: "ecommerce",
-    title: "E-commerce sur mesure",
-    excerpt:
-      "Boutiques haute performance avec WooCommerce Headless ou Shopify Storefront API. Panier optimiste, Stripe, stocks temps réel. Taux de conversion +28 % en moyenne.",
-    tags: ["WooCommerce", "Shopify", "Stripe", "Next.js"],
-  },
-  {
-    slug: "seo",
-    title: "SEO Technique",
-    excerpt:
-      "Audit Core Web Vitals, structured data Schema.org, sitemap dynamique, hreflang, Next/Image optimisé. Rapport mensuel des positions et actions correctives inclus.",
-    tags: ["Core Web Vitals", "Schema.org", "GA4", "Search Console"],
-  },
-  {
-    slug: "international",
-    title: "Sites Multilingues",
-    excerpt:
-      "Internationalisation avec next-intl, routing par locale, traductions WPML/Polylang, hreflang configuré. Compatible 20+ langues, SEO local inclus.",
-    tags: ["next-intl", "WPML", "i18next", "hreflang"],
-  },
-  {
-    slug: "design",
-    title: "UI/UX Design",
-    excerpt:
-      "Design System Figma → Storybook, composants accessibles WCAG 2.1 AA, animations Framer Motion. Prototype validé avec vous avant le moindre développement.",
-    tags: ["Figma", "Storybook", "Framer Motion", "WCAG 2.1"],
-  },
-];
 
 const processSteps = [
   {
@@ -121,9 +77,19 @@ const advantages = [
 ];
 
 export default async function ServicesPage() {
-  const services = (await getAllServices()) || [];
-  const isFallback = services.length === 0;
-  const items = isFallback ? fallbackServices : services;
+  const dbServices = (await getAllServices()) || [];
+  const items =
+    dbServices.length > 0
+      ? dbServices.map((s: any) => {
+          let tags: string[] = [];
+          try {
+            tags = s.tags ? JSON.parse(s.tags) : [];
+          } catch {
+            tags = [];
+          }
+          return { ...s, tags, isFallback: false };
+        })
+      : fallbackServices.map((s) => ({ ...s, isFallback: true }));
 
   return (
     <div className="bg-(--bg) min-h-screen pt-28">
@@ -187,26 +153,19 @@ export default async function ServicesPage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.map((service: any, index: number) => {
-              const Icon = iconMap[index % iconMap.length];
-              let tags: string[] = [];
-              if (isFallback) {
-                tags = service.tags || [];
-              } else {
-                try {
-                  tags = service.tags ? JSON.parse(service.tags) : [];
-                } catch {
-                  tags = [];
-                }
-              }
+            {items.map((service: any) => {
+              const Icon = service.icon ?? null;
+              const tags: string[] = service.tags ?? [];
               return (
                 <div
                   key={service.slug}
                   className="group p-8 bg-(--bg-card) border border-(--border) rounded-2xl hover:border-(--accent-border) transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(251,191,36,0.08)] flex flex-col"
                 >
-                  <div className="w-10 h-10 mb-6 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
-                    <Icon size={19} />
-                  </div>
+                  {Icon && (
+                    <div className="w-10 h-10 mb-6 flex items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
+                      <Icon size={19} />
+                    </div>
+                  )}
                   <h3 className="text-base font-bold text-(--fg) mb-3 group-hover:text-amber-400 transition-colors">
                     {service.title}
                   </h3>
@@ -226,14 +185,12 @@ export default async function ServicesPage() {
                       ))}
                     </div>
                   )}
-                  {!isFallback && (
-                    <Link
-                      href={`/services/${service.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-(--fg-2) group-hover:text-amber-400 transition-colors"
-                    >
-                      En savoir plus <ArrowUpRight size={13} />
-                    </Link>
-                  )}
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-(--fg-2) group-hover:text-amber-400 transition-colors"
+                  >
+                    En savoir plus <ArrowUpRight size={13} />
+                  </Link>
                 </div>
               );
             })}
