@@ -12,12 +12,22 @@ interface PageProps {
   }>;
 }
 
+interface DbService {
+  title: string;
+  excerpt?: string | null;
+  content?: string | null;
+  featuredImage?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  tags?: string | null;
+}
+
 export const revalidate = 60;
 
 export async function generateStaticParams() {
   const dbServices = (await getAllServices()) || [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dbSlugs = dbServices.map((s: any) => s.slug as string);
+  const dbSlugs = dbServices.map((s: any) => s.slug);
   const fallbackSlugs = fallbackServices
     .map((s) => s.slug)
     .filter((slug) => !dbSlugs.includes(slug));
@@ -28,8 +38,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dbService = (await getServiceBySlug(slug)) as any;
+  const dbService = (await getServiceBySlug(slug)) as DbService | null;
   const fallback = fallbackServicesBySlug[slug];
   const service = dbService ?? fallback;
   if (!service) return {};
@@ -62,8 +71,7 @@ export async function generateMetadata({
 
 export default async function ServicePage({ params }: PageProps) {
   const { slug } = await params;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dbService = (await getServiceBySlug(slug)) as any;
+  const dbService = (await getServiceBySlug(slug)) as DbService | null;
   const fallback = fallbackServicesBySlug[slug];
   const service = dbService ?? fallback;
 
