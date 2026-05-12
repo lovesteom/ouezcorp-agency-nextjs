@@ -1,4 +1,5 @@
 import { getServiceBySlug, getAllServices } from "@/lib/api";
+import { fallbackServicesBySlug, fallbackServices } from "@/lib/services-data";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -6,30 +7,47 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
+}
+
+interface DbService {
+  title: string;
+  excerpt?: string | null;
+  content?: string | null;
+  featuredImage?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  tags?: string | null;
 }
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const services = (await getAllServices()) || [];
-  return services.map((service: any) => ({
-    slug: service.slug,
-  }));
+  const dbServices = (await getAllServices()) || [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dbSlugs = dbServices.map((s: any) => s.slug);
+  const fallbackSlugs = fallbackServices
+    .map((s) => s.slug)
+    .filter((slug) => !dbSlugs.includes(slug));
+  return [...dbSlugs, ...fallbackSlugs].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const service = await getServiceBySlug(params.slug);
+  const { slug } = await params;
+  const dbService = (await getServiceBySlug(slug)) as DbService | null;
+  const fallback = fallbackServicesBySlug[slug];
+  const service = dbService ?? fallback;
   if (!service) return {};
 
-  const title = service.seoTitle || service.title;
-  const description = service.seoDescription || service.excerpt || "";
-  const image = service.featuredImage || "/images/LogoOuez-corp.webp";
-  const url = `https://ouezcorp.com/services/${params.slug}`;
+  const title = dbService?.seoTitle ?? fallback?.seoTitle ?? service.title;
+  const description =
+    dbService?.seoDescription ?? fallback?.seoDescription ?? service.excerpt ?? "";
+  const image = dbService?.featuredImage ?? "/images/LogoOuez-corp.webp";
+  const url = `https://ouezcorp.com/services/${slug}`;
 
   return {
     title,
@@ -40,19 +58,22 @@ export async function generateMetadata({
       description,
       url,
       type: "website",
-      images: [{ url: image, width: 1200, height: 630, alt: title }],
+      images: [{ url: image, width: 1200, height: 630, alt: title as string }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: title as string,
+      description: description as string,
       images: [image],
     },
   };
 }
 
 export default async function ServicePage({ params }: PageProps) {
-  const service = await getServiceBySlug(params.slug);
+  const { slug } = await params;
+  const dbService = (await getServiceBySlug(slug)) as DbService | null;
+  const fallback = fallbackServicesBySlug[slug];
+  const service = dbService ?? fallback;
 
   if (!service) {
     notFound();
@@ -89,10 +110,35 @@ export default async function ServicePage({ params }: PageProps) {
             {service.title}
           </h1>
           {service.excerpt && (
-            <p className="text-xl text-(--fg-2) max-w-2xl leading-relaxed">
+            <p className="text-xl text-(--fg-2) max-w-2xl leading-relaxed mb-8">
               {service.excerpt?.replace(/<[^>]*>/g, "")}
             </p>
           )}
+          {/* Tags */}
+          {(() => {
+            let tags: string[] = [];
+            if (fallback?.tags) {
+              tags = fallback.tags;
+            } else {
+              try {
+                tags = dbService?.tags ? JSON.parse(dbService.tags) : [];
+              } catch {
+                tags = [];
+              }
+            }
+            return tags.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1.5 text-xs font-semibold text-(--fg-2) bg-(--bg-card) border border-(--border) rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null;
+          })()}
         </div>
 
         {/* Image / Cover */}

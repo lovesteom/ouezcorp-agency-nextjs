@@ -1,10 +1,11 @@
-﻿import React from "react";
+import React from "react";
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import ProjectsShowcase from "@/components/ProjectsShowcase";
 import BlogShowcase from "@/components/BlogShowcase";
 import JsonLd from "@/components/JsonLd";
 import { getAllServices, getAllRealisations, getAllPosts } from "@/lib/api";
+import { fallbackServices as canonicalServices } from "@/lib/services-data";
 import Link from "next/link";
 import {
   Code2,
@@ -37,51 +38,6 @@ export const revalidate = 60;
 
 const iconMap = [Code2, Search, LifeBuoy, PenTool, MonitorPlay, Video, Share2];
 
-const fallbackServices = [
-  {
-    slug: "developpement-web",
-    title: "Developpement Web",
-    excerpt:
-      "Creation d'applications web performantes, interfaces Headless et sites vitrines sur-mesure. Architecture robuste et evolutive pour un resultat haut de gamme.",
-  },
-  {
-    slug: "seo",
-    title: "SEO & Visibilite",
-    excerpt:
-      "Audit technique, optimisation Core Web Vitals et strategie de contenu avancee. Boostez votre trafic organique et dominez les resultats de recherche.",
-  },
-  {
-    slug: "maintenance-support",
-    title: "Maintenance & Support",
-    excerpt:
-      "Suivi informatique proactif, mises a jour de securite et monitoring continu. Un support reactif pour garantir la stabilite de votre activite.",
-  },
-  {
-    slug: "design-identite",
-    title: "Design & Identite Visuelle",
-    excerpt:
-      "Conception d'interfaces UI/UX premium, creation de logos et chartes graphiques. Une identite forte pour marquer durablement vos utilisateurs.",
-  },
-  {
-    slug: "visuels-motion",
-    title: "Visuels & Motion Design",
-    excerpt:
-      "Creation de visuels engageants et d'animations dynamiques. Donnez vie a votre marque avec des elements visuels modernes et percutants.",
-  },
-  {
-    slug: "production-video",
-    title: "Production Video",
-    excerpt:
-      "Realisation, montage et habillage video professionnels. Des contenus immersifs pour magnifier vos campagnes et votre communication.",
-  },
-  {
-    slug: "gestion-reseaux-sociaux",
-    title: "Gestion de Reseau Social",
-    excerpt:
-      "Strategie de communication, creation de contenu regulier et animation de communaute. Engagez votre audience et developpez un lien unique.",
-  },
-];
-
 const methodItems = [
   { type: "bad", label: "Facturation horaire non previsible" },
   { type: "good", label: "Forfait fixe contracte des le depart" },
@@ -112,7 +68,7 @@ export default async function Home() {
   const realisations = (realisationsRaw || []) as any[];
   const posts = (postsRaw || []) as any[];
   const serviceItems =
-    services.length > 0 ? services.slice(0, 8) : fallbackServices;
+    services.length > 0 ? services.slice(0, 8) : canonicalServices.slice(0, 7);
 
   return (
     <div className="bg-(--bg)">
@@ -278,11 +234,14 @@ export default async function Home() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {serviceItems.map((item: any, index: number) => {
-              const Icon = iconMap[index % iconMap.length];
+              const Icon =
+                item.icon ?? iconMap[index % iconMap.length];
               return (
-                <div
+                <Link
                   key={item.slug}
-                  className="card-interactive group p-7 rounded-2xl cursor-pointer"
+                  href={`/services/${item.slug}`}
+                  aria-label={`En savoir plus sur ${item.title}`}
+                  className="card-interactive group p-7 rounded-2xl"
                 >
                   <div className="w-10 h-10 mb-5 flex items-center justify-center rounded-xl bg-(--accent-subtle) border border-(--accent-border) text-(--accent) group-hover:scale-110 transition-transform duration-200">
                     <Icon size={18} />
@@ -293,7 +252,7 @@ export default async function Home() {
                   <p className="text-(--fg-2) text-sm leading-relaxed">
                     {item.excerpt?.replace(/<[^>]*>/g, "")}
                   </p>
-                </div>
+                </Link>
               );
             })}
           </div>
