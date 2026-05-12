@@ -240,6 +240,7 @@ export default async function Home() {
                 <Link
                   key={item.slug}
                   href={`/services/${item.slug}`}
+                  aria-label={`En savoir plus sur ${item.title}`}
                   className="card-interactive group p-7 rounded-2xl"
                 >
                   <div className="w-10 h-10 mb-5 flex items-center justify-center rounded-xl bg-(--accent-subtle) border border-(--accent-border) text-(--accent) group-hover:scale-110 transition-transform duration-200">

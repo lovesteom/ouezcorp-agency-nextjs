@@ -141,7 +141,7 @@ export const fallbackServices: ServiceData[] = [
         <li>Appliquons les <strong>patches de sécurité</strong> critiques (WordPress, plugins, dépendances)</li>
         <li>Analysons les <strong>vulnérabilités</strong> CVE affectant votre stack</li>
         <li>Effectuons des <strong>scans de malware</strong> et vérifications d'intégrité</li>
-        <li>Maintenant les <strong>backups quotidiens</strong> chiffrés avec rotation 30 jours</li>
+        <li>Maintenons les <strong>backups quotidiens</strong> chiffrés avec rotation 30 jours</li>
       </ul>
 
       <h3>Support Technique Réactif</h3>
@@ -156,7 +156,7 @@ export const fallbackServices: ServiceData[] = [
       <ul>
         <li><strong>Essentiel</strong> — Monitoring + mises à jour + support email</li>
         <li><strong>Pro</strong> — Essentiel + audits trimestriels + 5 h d'interventions incluses</li>
-        <li><strong>Premium</strong> — Pro + astreinte fine de semaine + SLA garanti 99,9 %</li>
+        <li><strong>Premium</strong> — Pro + astreinte fin de semaine + SLA garanti 99,9 %</li>
       </ul>
     `,
   },
